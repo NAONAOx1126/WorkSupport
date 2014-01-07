@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Upload.Image" />
+<meta name="loadmodule" content="Address.ZipAddress" redirect="edit.html" />
+<meta name="loadmodule" content="Error.Check.Require" key="company_name" value="顧客会社名" />
+<meta name="loadmodule" content="Error.Check.Number" key="zip1" value="郵便番号１" />
+<meta name="loadmodule" content="Error.Check.Number" key="zip2" value="郵便番号２" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel1" value="電話番号１" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel2" value="電話番号２" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel3" value="電話番号３" />
+<meta name="loadmodule" content="Error.Check.Number" key="limit_day" value="締め日" />
+<meta name="loadmodule" content="Error.Check.Number" key="payment_day" value="支払日" />
+<meta name="loadmodule" content="Error.Exception" error="company/edit.html" />
+<!--{include file="common/header.html" subtitle=$configure.f_company}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="company" value=$post}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_company}--> - <!--{$configure.s_confirm}--></h3>
+                    </div>
+                    <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                    <div class="alert alert-danger">
+                        <ul>
+                            <!--{foreach from=$ERRORS item="error"}-->
+                            <li>
+                                <!--{$error}-->
+                            </li>
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!--{/if}-->
+                    <form class="well" action="complete.html" method="POST" enctype="multipart/form-data" role="form">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>自社名</label></th>
+                                    <td><!--{$company.company_name}--></td>
+                                </tr>
+                                <tr>
+                                    <th><label>メールアドレス</label></th>
+                                    <td>
+                                        <!--{$company.email}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>住所</label></th>
+                                    <td>
+                                        〒<!--{$company.zip1}-->-<!--{$company.zip2}--><br />
+                                        <!--{$company.address1}--><!--{$company.address2|input:"address2"}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>電話番号</label></th>
+                                    <td><!--{$company.tel1}-->-<!--{$company.tel2}-->-<!--{$company.tel3}--></td>
+                                </tr>
+                                <tr>
+                                    <th><label>締め日</label></th>
+                                    <td>
+                                        <!--{if $company.limit_day == "99"}-->末日<!--{else}--><!--{$company.limit_day}-->日<!--{/if}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>支払日</label></th>
+                                    <td>
+                                        <!--{if $company.payment_month == "0"}-->当月<!--{/if}-->
+                                        <!--{if $company.payment_month == "1"}-->翌月<!--{/if}-->
+                                        <!--{if $company.payment_month == "2"}-->翌々月<!--{/if}-->
+                                        <!--{if $company.payment_day == "99"}-->末日<!--{else}--><!--{$company.payment_day}-->日<!--{/if}-->
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="save" id="save" value="この内容で登録する" class="btn btn-primary" /> <a href="index.html?exec_search=1" class="btn">一覧に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>

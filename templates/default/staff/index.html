@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Operator.Delete" />
+<meta name="loadmodule" content="Admin.Operator.Page" wkey="ne:role_id" wvalue="3" />
+<!--{include file="common/header.html" subtitle=$configure.f_staff}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12"> 
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3><!--{$configure.f_staff}--> - <!--{$configure.s_index}--></h3>
+                </div>
+            </div>
+            <div id="pagelink"><!--{$attr.operators_pager->getPageLink()}--><p class="total">全<!--{$attr.operators_pager->getDataSize()|number_format}-->件</p></div>
+        
+            
+            <div><a href="new.html" class="btn btn-default">新規登録</a></div>
+            
+        <div class="w-box w-box-green">
+            <div class="w-box-content cnt_a">
+            <table class="table table-bordered table-striped" summary="一覧">
+            <tr>
+            <th class="blue header">所属会社名</th>
+            <th class="blue header">担当者名</th>
+            <th class="blue header">メールアドレス</th>
+            <th class="blue header">電話番号</th>
+            <th class="blue header">&nbsp;</th>
+            </tr>
+            <!--{foreach from=$attr.operators item="operator"}-->
+            <tr>
+                <td><!--{$operator->company()->company_name}--></td>
+                <td><!--{$operator->operator_name}--></td>
+                <td><!--{$operator->email}--></td>
+                <td><!--{$operator->tel1}-->-<!--{$operator->tel2}-->-<!--{$operator->tel3}--></td>
+                <td>
+                <a href="edit.html?operator_id=<!--{$operator->operator_id}-->" class="btn btn-default">編集</a>
+                <a href="index.html?delete=1&operator_id=<!--{$operator->operator_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$operator->contact_name}-->を削除します。よろしいですか？')">削除</a>
+                </td>
+            </tr>
+            <!--{/foreach}-->
+            </table>
+            </div>
+        </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+    
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+</body>
+</html>

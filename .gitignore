@@ -1,0 +1,9 @@
+/vendor
+/upload
+/composer.lock
+/.buildpath
+/_contents
+/.settings
+/_cache
+/_cache_smarty
+/_logs

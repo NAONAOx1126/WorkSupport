@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="admin/login.html" />
+<meta name="loadmodule" content="Admin.Company.List" mode="select" select="company_id|company_name" />
+<meta name="loadmodule" content="Error.Check.Require" key="operator_name" value="氏名" />
+<meta name="loadmodule" content="Error.Check.Require" key="email" value="メールアドレス" />
+<meta name="loadmodule" content="Error.Check.Email" key="email" value="メールアドレス" />
+<meta name="loadmodule" content="Error.Check.Require" key="tel1" value="電話番号1" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel1" value="電話番号1" />
+<meta name="loadmodule" content="Error.Check.Require" key="tel2" value="電話番号2" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel2" value="電話番号2" />
+<meta name="loadmodule" content="Error.Check.Require" key="tel3" value="電話番号3" />
+<meta name="loadmodule" content="Error.Check.Number" key="tel3" value="電話番号3" />
+<meta name="loadmodule" content="Error.Exception" error="staff/edit.html" />
+<!--{include file="common/header.html" subtitle=$configure.f_staff}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="operator" value=$post}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_staff}--> - <!--{$configure.s_confirm}--></h3>
+                    </div>
+                    <form class="well" action="complete.html" method="POST">
+                        <input type="hidden" name="login_id" value="<!--{$operator.email}-->" />
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>氏名</label></th>
+                                    <td>
+                                        <!--{$operator.operator_name}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>メールアドレス</label></th>
+                                    <td>
+                                        <!--{$operator.email}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>パスワード</label></th>
+                                    <td>
+                                        <!--{$operator.password}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>電話番号</label></th>
+                                    <td>
+                                        <!--{$operator.tel1}-->-<!--{$operator.tel2}-->-<!--{$operator.tel3}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>権限</label></th>
+                                    <td>
+                                        <!--{if $operator.role_id == "1"}-->管理者<!--{elseif $operator.role_id == "2"}-->一般ユーザー<!--{/if}--><br />
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="save" id="save" value="登録内容を確認" class="btn btn-primary" />
+                                                <a href="edit.html" class="btn btn-default">編集画面に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+    "require": {
+        "naonaox1126/vizualizer": "dev-develop",
+        "naonaox1126/vizualizer_address": "dev-develop",
+        "naonaox1126/vizualizer_admin": "dev-develop",
+        "naonaox1126/vizualizer_member": "dev-develop",
+        "naonaox1126/vizualizer_shop": "dev-develop",
+        "smarty/smarty": ">=3.1.0",
+        "PHPOffice/PHPExcel": "1.7.8"
+    }, 
+    "require-dev": {
+        "naonaox1126/vizualizer": "dev-develop",
+        "naonaox1126/vizualizer_address": "dev-develop",
+        "naonaox1126/vizualizer_admin": "dev-develop",
+        "naonaox1126/vizualizer_member": "dev-develop",
+        "naonaox1126/vizualizer_shop": "dev-develop",
+        "smarty/smarty": "dev-trunk",
+        "PHPOffice/PHPExcel": "1.7.8"
+    },
+	"repositories": [{
+	    "type": "package",
+	    "package": {
+	        "name": "PHPOffice/PHPExcel",
+	        "version": "1.7.8",
+	        "source": {
+	            "url": "https://github.com/PHPOffice/PHPExcel.git",
+	            "type": "git",
+	            "reference": "PHPExcel_1.7.8"
+	        },
+	        "autoload": {
+	            "psr-0": {
+	                "PHPExcel": "Classes/"
+	            }
+	        }
+	    }
+	}]
+}

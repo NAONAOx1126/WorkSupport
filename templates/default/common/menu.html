@@ -1,0 +1,37 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="<!--{base}-->/index.html"><!--{$configure.site_name}--></a>
+    </div>
+    <!--{if $attr[VizualizerAdmin::KEY] && $attr[VizualizerAdmin::KEY]->operator_id > 0}-->
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <!--{if $attr[VizualizerAdmin::KEY]->hasRole(array("administrator"))}-->
+        <li><a href="<!--{base}-->/company/index.html">自社管理</a></li>
+        <!--{/if}-->
+        <li><a href="<!--{base}-->/staff/index.html">自社担当者管理</a></li>
+        <!--{if $attr[VizualizerAdmin::KEY]->hasRole(array("administrator"))}-->
+        <li><a href="<!--{base}-->/split/index.html">自社間分配比率管理</a></li>
+        <li><a href="<!--{base}-->/customer/index.html">顧客会社管理</a></li>
+        <li><a href="<!--{base}-->/contact/index.html">顧客担当者管理</a></li>
+        <!--{/if}-->
+        <li><a href="<!--{base}-->/trade/index.html">案件管理</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><!--{$attr[VizualizerAdmin::KEY]->operator_name}--><b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li><a href="<!--{base}-->/login.html">ログアウト</a></li>
+        </ul>
+      </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+    <!--{/if}-->
+  </div>
+</div>

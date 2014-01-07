@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Company.List" mode="select" select="company_id|company_name" wkey="self_flg" wvalue="0" />
+<meta name="loadmodule" content="Admin.Operator.Detail" />
+<!--{include file="common/header.html" subtitle=$configure.f_contact}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="operator" value=$attr.operator}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_contact}--> - <!--{$configure.s_edit}--></h3>
+                    </div>
+                    <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                    <div class="alert alert-danger">
+                        <ul>
+                            <!--{foreach from=$ERRORS item="error"}-->
+                            <li>
+                                <!--{$error}-->
+                            </li>
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!--{/if}-->
+                    <form class="well" action="confirm.html" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="operator_id" value="<!--{$operator->operator_id}-->" />
+                        <input type="hidden" name="company_id" value="<!--{$operator->operator_id|default:$attr[VizualizerAdmin::KEY]->company_id}-->" />
+                        <input type="hidden" name="role_id" value="3" />
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>所属組織</label></th>
+                                    <td>
+                                    <select name="company_id" class="form-control">
+                                    <!--{assign var="company_id" value=$operator->company_id|input:"company_id"}-->
+                                    <!--{html_options options=$attr.companys selected=$company_id}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>担当者名</label></th>
+                                    <td><input type="text" name="operator_name" class="form-control" value="<!--{$operator->operator_name|input:"operator_name"}-->" /></td>
+                                </tr>
+                                <tr>
+                                    <th><label>メールアドレス</label></th>
+                                    <td><input type="text" name="email" class="form-control" value="<!--{$operator->email|input:"email"}-->" /></td>
+                                </tr>
+                                <tr>
+                                    <th><label>電話番号</label></th>
+                                    <td>
+                                        <div class="controls form-inline">
+                                            <div class="form-group"><input type="text" name="tel1" id="tel1" class="form-control" value="<!--{$operator->tel1|input:"tel1"}-->" maxlength="6" /></div>
+                                            <label>-</label>
+                                            <div class="form-group"><input type="text" name="tel2" id="tel1" class="form-control" value="<!--{$operator->tel2|input:"tel2"}-->" maxlength="6" /></div>
+                                            <label>-</label>
+                                            <div class="form-group"><input type="text" name="tel3" id="tel1" class="form-control" value="<!--{$operator->tel3|input:"tel3"}-->" maxlength="6" /></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="confirm" id="confirm" value="登録内容を確認" class="btn btn-primary" />
+                                                <a href="index.html?exec_search=1" class="btn btn-default">一覧に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>

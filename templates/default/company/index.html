@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Company.Delete" />
+<meta name="loadmodule" content="Admin.Company.Page" wkey="self_flg" wvalue="1" />
+<!--{include file="common/header.html" subtitle=$configure.f_company}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12"> 
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3><!--{$configure.f_company}--> - <!--{$configure.s_index}--></h3>
+                </div>
+            </div>
+            <div id="pagelink"><!--{$attr.companys_pager->getPageLink()}--><p class="total">全<!--{$attr.companys_pager->getDataSize()|number_format}-->件</p></div>
+        
+            
+            <div><a href="new.html" class="btn btn-default">新規登録</a></div>
+            
+        <div class="w-box w-box-green">
+            <div class="w-box-content cnt_a">
+            <table class="table table-bordered table-striped" summary="一覧">
+            <tr>
+            <th class="blue header">自社名</th>
+            <th class="blue header">住所</th>
+            <th class="blue header">電話番号</th>
+            <th class="blue header">&nbsp;</th>
+            </tr>
+            <!--{foreach from=$attr.companys item="company"}-->
+            <tr>
+                <td><!--{$company->company_name}--></td>
+                <td>
+                    〒<!--{$company->zip1}-->-<!--{$company->zip2}--><br />
+                    <!--{$company->pref_name()}--><!--{$company->address1}--><!--{$company->address2}-->
+                </td>
+                <td><!--{$company->tel1}-->-<!--{$company->tel2}-->-<!--{$company->tel3}--></td>
+                <td>
+                <a href="edit.html?company_id=<!--{$company->company_id}-->" class="btn btn-default">編集</a>
+                <a href="index.html?delete=1&company_id=<!--{$company->company_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$company->company_name}-->を削除します。\r\nよろしいですか？')">削除</a>
+                </td>
+            </tr>
+            <!--{/foreach}-->
+            </table>
+            </div>
+        </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+    
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+</body>
+</html>
