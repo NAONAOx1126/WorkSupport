@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Operator.List" result="staffs" wkey="ne:role_id" wvalue="3" />
+<meta name="loadmodule" content="Admin.Operator.List" result="customers" />
+<meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
+<meta name="loadmodule" content="Admin.TradeSplit.Detail" />
+<!--{include file="common/header.html" subtitle=$configure.f_split}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="tradeSplit" value=$attr.tradeSplit}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_split}--> - <!--{$configure.s_edit}--></h3>
+                    </div>
+                    <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                    <div class="alert alert-danger">
+                        <ul>
+                            <!--{foreach from=$ERRORS item="error"}-->
+                            <li>
+                                <!--{$error}-->
+                            </li>
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!--{/if}-->
+                    <form class="well" action="confirm.html" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="trade_split_id" value="<!--{$tradeSplit->trade_split_id}-->" />
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>作業担当者</label></th>
+                                    <td>
+                                    <select name="worker_operator_id" class="form-control">
+                                    <!--{assign var="worker_operator_id" value=$tradeSplit->worker_operator_id|input:"worker_operator_id"}-->
+                                    <!--{foreach from=$attr.staffs item="staff"}-->
+                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $worker_operator_id}--> selected<!--{/if}-->>
+                                    <!--{$staff->company()->company_name}--> <!--{$staff->operator_name}-->
+                                    </option>
+                                    <!--{/foreach}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>窓口担当者</label></th>
+                                    <td>
+                                    <select name="contact_operator_id" class="form-control">
+                                    <!--{assign var="contact_operator_id" value=$tradeSplit->contact_operator_id|input:"contact_operator_id"}-->
+                                    <!--{foreach from=$attr.staffs item="staff"}-->
+                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $contact_operator_id}--> selected<!--{/if}-->>
+                                    <!--{$staff->company()->company_name}--> <!--{$staff->operator_name}-->
+                                    </option>
+                                    <!--{/foreach}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>顧客担当者</label></th>
+                                    <td>
+                                    <select name="customer_operator_id" class="form-control">
+                                    <!--{assign var="customer_operator_id" value=$tradeSplit->customer_operator_id|input:"customer_operator_id"}-->
+                                    <!--{foreach from=$attr.customers item="customer"}-->
+                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $customer_operator_id}--> selected<!--{/if}-->>
+                                    <!--{$customer->company()->company_name}--> <!--{$customer->operator_name}-->
+                                    </option>
+                                    <!--{/foreach}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引種別</label></th>
+                                    <td>
+                                    <select name="trade_type_id" class="form-control">
+                                    <!--{assign var="trade_type_id" value=$tradeSplit->trade_type_id|input:"trade_type_id"}-->
+                                    <!--{html_options options=$attr.tradeTypes selected=$trade_type_id}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>窓口分配率（％）</label></th>
+                                    <td><input type="text" name="contact_mergin_rate" class="form-control" value="<!--{$tradeSplit->contact_mergin_rate|input:"contact_mergin_rate"}-->" /></td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="confirm" id="confirm" value="登録内容を確認" class="btn btn-primary" />
+                                                <a href="index.html?exec_search=1" class="btn btn-default">一覧に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>

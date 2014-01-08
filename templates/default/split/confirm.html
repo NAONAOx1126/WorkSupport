@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="admin/login.html" />
+<meta name="loadmodule" content="Admin.Operator.Detail" />
+<meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
+<meta name="loadmodule" content="Error.Check.Require" key="worker_operator_id" value="作業担当者" />
+<meta name="loadmodule" content="Error.Check.Require" key="contact_operator_id" value="窓口担当者" />
+<meta name="loadmodule" content="Error.Check.Require" key="customer_operator_id" value="顧客担当者" />
+<meta name="loadmodule" content="Error.Check.Require" key="contact_mergin_rate" value="窓口分配率" />
+<meta name="loadmodule" content="Error.Check.Number" key="contact_mergin_rate" value="窓口分配率" />
+<meta name="loadmodule" content="Error.Exception" error="split/edit.html" />
+<!--{include file="common/header.html" subtitle=$configure.f_split}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="tradeSplit" value=$post}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_split}--> - <!--{$configure.s_confirm}--></h3>
+                    </div>
+                    <form class="well" action="complete.html" method="POST">
+                        <input type="hidden" name="login_id" value="<!--{$operator.email}-->" />
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>作業担当者</label></th>
+                                    <td>
+                                        <!--{$attr.operator->findByPrimaryKey($tradeSplit.worker_operator_id)}-->
+                                        <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>窓口担当者</label></th>
+                                    <td>
+                                        <!--{$attr.operator->findByPrimaryKey($tradeSplit.contact_operator_id)}-->
+                                        <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>顧客担当者</label></th>
+                                    <td>
+                                        <!--{$attr.operator->findByPrimaryKey($tradeSplit.customer_operator_id)}-->
+                                        <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引種別</label></th>
+                                    <td>
+                                        <!--{$attr.tradeTypes[$tradeSplit.trade_type_id]}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>窓口分配率（％）</label></th>
+                                    <td>
+                                        <!--{$tradeSplit.contact_mergin_rate}-->%
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="save" id="save" value="登録内容を確認" class="btn btn-primary" />
+                                                <a href="edit.html" class="btn btn-default">編集画面に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>
