@@ -70,23 +70,23 @@
                                 <tr>
                                     <th><label>ロゴ画像</label></th>
                                     <td>
-                                    <!--{assign var="logo_url" value=$company->location|input:"location"}-->
+                                    <!--{assign var="logo_url" value=$company->logo|input:"logo"}-->
                                     <!--{if $logo_url != ""}-->
-                                    <input type="hidden" name="location" value="<!--{$logo_url}-->" />
+                                    <input type="hidden" name="logo" value="<!--{$logo_url}-->" />
                                     <img src="<!--{$logo_url}-->" />
                                     <!--{/if}-->
-                                    <input type="file" name="location" class="form-control" value="" />
+                                    <input type="file" name="logo" class="form-control" value="" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>印鑑画像</label></th>
                                     <td>
-                                    <!--{assign var="stamp_url" value=$company->url|input:"url"}-->
+                                    <!--{assign var="stamp_url" value=$company->stamp|input:"stamp"}-->
                                     <!--{if $stamp_url != ""}-->
-                                    <input type="hidden" name="url" value="<!--{$stamp_url}-->" />
+                                    <input type="hidden" name="stamp" value="<!--{$stamp_url}-->" />
                                     <img src="<!--{$stamp_url}-->" />
                                     <!--{/if}-->
-                                    <input type="file" name="url" class="form-control" value="" />
+                                    <input type="file" name="stamp" class="form-control" value="" />
                                     </td>
                                 </tr>
                                 <tr>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
+<meta name="loadmodule" content="Admin.TradeStatus.List" mode="select" select="trade_status_id|trade_status_name" />
+<meta name="loadmodule" content="Admin.Trade.Page" />
+<meta name="loadmodule" content="Input.Reset" />
+<!--{include file="common/header.html" subtitle=$configure.f_trade}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12"> 
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3><!--{$configure.f_trade}--> - <!--{$configure.s_index}--></h3>
+                </div>
+                <div class="w-box-content cnt_a">
+                    <!--{assign var="search" value=$post.search}-->
+                    <form class="well" action="index.html" method="POST">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>案件名</label></th>
+                                    <td><input type="text" name="search[trade_name]" value="<!--{$search.trade_name}-->" class="form-control" /></td>
+                                    <th><label>担当者</label></th>
+                                    <td>
+                                        <select name="search[worker_operator_id]" class="form-control">
+                                        <option value="">----------</option>
+                                        <!--{foreach from=$attr[VizualizerAdmin::KEY]->company()->operators() item="operator"}-->
+                                        <option value="<!--{$operator->operator_id}-->"<!--{if $search.worker_operator_id == $operator->operator_id}--> selected<!--{/if}-->>
+                                        <!--{$operator->operator_name}-->
+                                        </option>
+                                        <!--{/foreach}-->
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>納品月</label></th>
+                                    <td>
+                                        <div class="col-lg-2" style="width: 220px;">
+                                        <div class="input-group date" id="delivered_date" data-date="<!--{$search["back:delivered_date"]}-->" data-date-format="yyyy-mm">
+                                            <input class="form-control" size="16" type="text" name="search[back:delivered_date]" value="<!--{$search["back:delivered_date"]}-->" readonly>
+                                            <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        </div>
+                                    </td>
+                                    <th><label>請求月</label></th>
+                                    <td>
+                                        <div class="col-lg-2" style="width: 220px;">
+                                        <div class="input-group date" id="billing_date" data-date="<!--{$search["back:billing_date"]}-->" data-date-format="yyyy-mm">
+                                            <input class="form-control" size="16" type="text" name="search[back:billing_date]" value="<!--{$search["back:billing_date"]}-->" readonly>
+                                            <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引種別</label></th>
+                                    <td>
+                                    <select name="search[trade_type_id]" class="form-control">
+                                    <option value="">----------</option>
+                                    <!--{html_options options=$attr.tradeTypes selected=$search.trade_type_id}-->
+                                    </select>
+                                    </td>
+                                    <th><label>取引ステータス</label></th>
+                                    <td>
+                                    <select name="search[trade_status_id]" class="form-control">
+                                    <option value="">----------</option>
+                                    <!--{html_options options=$attr.tradeStatuses selected=$search.trade_status_id}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="exec_search" id="" value="上記の条件で検索する" class="btn btn-primary" /> <input type="submit" name="reset" id="reset" value="リセット" class="btn btn-warning" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+            <div class="alert alert-danger">
+                <ul>
+                    <!--{foreach from=$ERRORS item="error"}-->
+                    <li>
+                        <!--{$error}-->
+                    </li>
+                    <!--{/foreach}-->
+                </ul>
+            </div>
+            <!--{/if}-->
+            <div id="pagelink"><!--{$attr.trades_pager->getPageLink()}--><p class="total">全<!--{$attr.trades_pager->getDataSize()|number_format}-->件</p></div>
+            
+            <div class="row">
+                <div class="col-md-1"><a href="new.html" class="btn btn-default">新規登録</a></div>
+                <div class="col-md-2">
+                    <form action="pdf/deliver_all.html" method="POST">
+                    <a href="pdf/deliver_all.html" class="btn btn-default" target="_blank">納品書一括出力</a>
+                    </form>
+                </div>
+                <div class="col-md-2">
+                    <a href="pdf/bill_all.html" class="btn btn-default" target="_blank">請求書一括出力</a>
+                </div>
+            </div>
+            
+            <div class="w-box w-box-green">
+                <div class="w-box-content cnt_a">
+                <table class="table table-bordered table-striped" summary="一覧">
+                <tr>
+                <th class="blue header">取引名称</th>
+                <th class="blue header">作業担当者</th>
+                <th class="blue header">顧客担当者</th>
+                <th class="blue header">見積金額</th>
+                <th class="blue header">ステータス</th>
+                <th class="blue header">請求年月</th>
+                <th class="blue header">&nbsp;</th>
+                </tr>
+                <!--{foreach from=$attr.trades item="trade"}-->
+                <tr>
+                    <td><!--{$trade->trade_name}--></td>
+                    <td><!--{$trade->worker()->company()->company_name}--><br /><!--{$trade->worker()->operator_name}--></td>
+                    <td><!--{$trade->customer()->company()->company_name}--><br /><!--{$trade->customer()->operator_name}--></td>
+                    <td><!--{$trade->total|number_format}-->円</td>
+                    <td><!--{$trade->tradeStatus()->trade_status_name}--></td>
+                    <td><!--{$trade->billing_date|date_format:"%Y年%m月"}--></td>
+                    <td>
+                    <a href="detail.html?trade_id=<!--{$trade->trade_id}-->" class="btn btn-default">詳細</a>
+                    </td>
+                </tr>
+                <!--{/foreach}-->
+                </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+    
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+<script type="text/javascript">
+$("#billing_date").datepicker({
+	minViewMode: 1,
+	autoclose: true,
+	clearBtn: true,
+	format: "yyyy-mm"
+});
+$("#delivered_date").datepicker({
+	minViewMode: 1,
+	autoclose: true,
+	clearBtn: true,
+	format: "yyyy-mm"
+});
+</script>
+</body>
+</html>
