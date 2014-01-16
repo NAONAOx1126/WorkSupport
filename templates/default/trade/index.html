@@ -6,6 +6,7 @@
 <meta name="loadmodule" content="Admin.Login" error="login.html" />
 <meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
 <meta name="loadmodule" content="Admin.TradeStatus.List" mode="select" select="trade_status_id|trade_status_name" />
+<meta name="loadmodule" content="Admin.Trade.List" result="allTrades" />
 <meta name="loadmodule" content="Admin.Trade.Page" />
 <meta name="loadmodule" content="Input.Reset" />
 <!--{include file="common/header.html" subtitle=$configure.f_trade}-->
@@ -105,15 +106,13 @@
             <!--{/if}-->
             <div id="pagelink"><!--{$attr.trades_pager->getPageLink()}--><p class="total">全<!--{$attr.trades_pager->getDataSize()|number_format}-->件</p></div>
             
-            <div class="row">
-                <div class="col-md-1"><a href="new.html" class="btn btn-default">新規登録</a></div>
-                <div class="col-md-2">
-                    <form action="pdf/deliver_all.html" method="POST">
-                    <a href="pdf/deliver_all.html" class="btn btn-default" target="_blank">納品書一括出力</a>
-                    </form>
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <a href="new.html" class="btn btn-default">新規登録</a>
                 </div>
-                <div class="col-md-2">
-                    <a href="pdf/bill_all.html" class="btn btn-default" target="_blank">請求書一括出力</a>
+                <div class="btn-group">
+                    <a href="pdf/deliver.html?trade_ids=<!--{foreach from=$attr.allTrades key="index" item="trade"}--><!--{if $index > 0}-->,<!--{/if}--><!--{$trade->trade_id}--><!--{/foreach}-->" class="btn btn-default" target="_blank">納品書一括出力</a>
+                    <a href="pdf/bill.html?trade_ids=<!--{foreach from=$attr.allTrades key="index" item="trade"}--><!--{if $index > 0}-->,<!--{/if}--><!--{$trade->trade_id}--><!--{/foreach}-->" class="btn btn-default" target="_blank">請求書一括出力</a>
                 </div>
             </div>
             
