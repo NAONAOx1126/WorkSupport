@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Company.List" />
+<meta name="loadmodule" content="Trade.Payment.List" wkey="reconciled_flg" wvalue="0" />
+<meta name="loadmodule" content="Trade.Bill.List" mode="select" select="bill_id|bill_name" wkey="status_id" wvalue="6" />
+<meta name="loadmodule" content="Input.Reset" />
+<!--{include file="common/header.html" subtitle=$configure.f_split}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<!--{assign var="company" value=$attr.companys->current()}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12"> 
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3>【<!--{$company->company_name}-->】<!--{$configure.f_payment}--> - <!--{$configure.s_index}--></h3>
+                </div>
+            </div>
+            
+            <div class="w-box-content cnt_a">
+                <form class="well" action="upload.html" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="company_id" value="<!--{$company->company_id}-->" />
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th><label>アップロードファイル</label></th>
+                                <td>
+                                <input type="file" name="payment" class="form-control" />
+                                </td>
+                                <td>
+                                    <div class="btn-toolbar">
+                                        <div class="btn-group">
+                                            <input type="submit" name="exec_search" id="" value="アップロード" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                    </table>
+                </form>
+            </div>
+            
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <a href="index.html" class="btn btn-default">別の法人に対して作業を行う</a>
+                    <a href="new.html?company_id=<!--{$company->company_id}-->" class="btn btn-default">新規登録</a>
+                </div>
+            </div>
+            
+            <div class="w-box w-box-green">
+                <div class="w-box-content cnt_a">
+                <table class="table table-bordered table-striped" summary="一覧">
+                <tr>
+                <th class="blue header">入金日</th>
+                <th class="blue header">振込銀行</th>
+                <th class="blue header">振込番号</th>
+                <th class="blue header">振込人名義</th>
+                <th class="blue header">入金金額</th>
+                <th class="blue header">消込</th>
+                </tr>
+                <!--{foreach from=$attr.payments item="payment"}-->
+                <tr>
+                    <td><!--{$payment->payment_date|date_format:"%Y年%m月%d日"}--></td>
+                    <td><!--{$payment->bank_name}--><!--{$payment->branch_name}--></td>
+                    <td><!--{$payment->payment_code}--></td>
+                    <td><!--{$payment->payment_name}--></td>
+                    <td><!--{$payment->payment_total|number_format}-->（<!--{$payment->reconciled_total|number_format}-->円消込済）</td>
+                    <form action="reconcile.html">
+                    <td>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <select name="bill_id" class="form-control">
+                                <!--{html_options options=$attr.bills}-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="btn-toolbar">
+                                    <div class="btn-group">
+                                        <a href="edit.html?split_id=<!--{$split->split_id}-->" class="btn btn-default">消込</a>
+                                        <a href="list.html?delete=1&payment_id=<!--{$payment->payment_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$payment->payment_name}-->を削除します。よろしいですか？')">削除</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    </form>
+                </tr>
+                <!--{/foreach}-->
+                </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+    
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+</body>
+</html>

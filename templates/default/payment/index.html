@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Company.List" mode="select" select="company_id|company_name" wkey="self_flg" wvalue="1" />
+<meta name="loadmodule" content="Input.Reset" />
+<!--{include file="common/header.html" subtitle=$configure.f_payment}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12"> 
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3><!--{$configure.f_payment}--> - <!--{$configure.s_index}--></h3>
+                </div>
+                <div class="w-box-content cnt_a">
+                    <form class="well" action="list.html" method="POST">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>法人選択</label></th>
+                                    <td>
+                                    <select name="search[company_id]" class="form-control">
+                                    <!--{assign var="company_id" value=$post.search.company_id}-->
+                                    <!--{html_options options=$attr.companys selected=$company_id}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="exec_search" id="" value="この法人に対して作業を行う" class="btn btn-primary" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+    
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+</body>
+</html>
