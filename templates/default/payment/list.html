@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Trade.Payment.Reconcile" />
 <meta name="loadmodule" content="Admin.Company.List" />
 <meta name="loadmodule" content="Trade.Payment.List" wkey="reconciled_flg" wvalue="0" />
 <meta name="loadmodule" content="Trade.Bill.List" mode="select" select="bill_id|bill_name" wkey="status_id" wvalue="6" />
@@ -74,7 +75,8 @@
                     <td><!--{$payment->payment_code}--></td>
                     <td><!--{$payment->payment_name}--></td>
                     <td><!--{$payment->payment_total|number_format}-->（<!--{$payment->reconciled_total|number_format}-->円消込済）</td>
-                    <form action="reconcile.html">
+                    <form action="list.html" method="POST">
+                    <input type="hidden" name="payment_id" value="<!--{$payment->payment_id}-->" />
                     <td>
                         <div class="form-inline">
                             <div class="form-group">
@@ -85,7 +87,7 @@
                             <div class="form-group">
                                 <div class="btn-toolbar">
                                     <div class="btn-group">
-                                        <a href="edit.html?split_id=<!--{$split->split_id}-->" class="btn btn-default">消込</a>
+                                        <input type="submit" name="reconcile" class="btn btn-default" value="消込" />
                                         <a href="list.html?delete=1&payment_id=<!--{$payment->payment_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$payment->payment_name}-->を削除します。よろしいですか？')">削除</a>
                                     </div>
                                 </div>
