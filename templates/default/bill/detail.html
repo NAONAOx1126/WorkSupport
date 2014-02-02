@@ -6,20 +6,20 @@
 <meta name="loadmodule" content="Admin.Login" error="login.html" />
 <meta name="loadmodule" content="Admin.Operator.List" result="staffs" wkey="ne:role_id" wvalue="3" />
 <meta name="loadmodule" content="Admin.Operator.List" result="customers" />
-<meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
-<meta name="loadmodule" content="Admin.TradeStatus.List" mode="select" select="trade_status_id|trade_status_name" />
-<meta name="loadmodule" content="Admin.Trade.Detail" />
-<!--{include file="common/header.html" subtitle=$configure.f_trade}-->
+<meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
+<meta name="loadmodule" content="Trade.Status.List" mode="select" select="status_id|status_name" />
+<meta name="loadmodule" content="Trade.Bill.Detail" />
+<!--{include file="common/header.html" subtitle=$configure.f_bill}-->
 </head>
 <body class="bg_d">
     <div class="main-wrapper">
         <!--{include file="common/menu.html"}-->
-        <!--{assign var="trade" value=$attr.trade}-->
+        <!--{assign var="bill" value=$attr.bill}-->
         <div class="container">
             <div class="row-fluid">
                 <div class="span12">
                     <div class="w-box-header">
-                        <h3><!--{$configure.f_trade}--> - <!--{$configure.s_edit}--></h3>
+                        <h3><!--{$configure.f_bill}--> - <!--{$configure.s_edit}--></h3>
                     </div>
                     <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
                     <div class="alert alert-danger">
@@ -34,47 +34,47 @@
                     <!--{/if}-->
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                        <a href="edit.html?trade_id=<!--{$trade->trade_id}-->" class="btn btn-default">このデータを編集する</a>
-                        <!--{if $trade->related_trade_id > 0}-->
-                        <a href="edit.html?trade_id=<!--{$trade->related_trade_id}-->" class="btn btn-default">元のデータを編集する</a>
+                        <a href="edit.html?bill_id=<!--{$bill->bill_id}-->" class="btn btn-default">このデータを編集する</a>
+                        <!--{if $bill->related_bill_id > 0}-->
+                        <a href="edit.html?bill_id=<!--{$bill->related_bill_id}-->" class="btn btn-default">元のデータを編集する</a>
                         <!--{/if}-->
                         </div>
                         <div class="btn-group">
-                            <a href="pdf/quotation.html?trade_ids=<!--{$trade->trade_id}-->" class="btn btn-default" target="_blank">見積書出力</a>
-                            <a href="pdf/deliver.html?trade_ids=<!--{$trade->trade_id}-->" class="btn btn-default" target="_blank">納品書出力</a>
-                            <a href="pdf/bill.html?trade_ids=<!--{$trade->trade_id}-->" class="btn btn-default" target="_blank">請求書出力</a>
+                            <a href="pdf/quotation.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">見積書出力</a>
+                            <a href="pdf/deliver.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">納品書出力</a>
+                            <a href="pdf/bill.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">請求書出力</a>
                         </div>
                     </div>
                     <table class="table table-bordered">
                         <tbody>
                             <tr>
                                 <th><label>取引名称</label></th>
-                                <td><!--{$trade->trade_name|input:"trade_name"}--></td>
+                                <td><!--{$bill->bill_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>作業担当者</label></th>
-                                <td><!--{$trade->worker()->company()->company_name}--> <!--{$trade->worker()->operator_name}--></td>
+                                <td><!--{$bill->worker()->company()->company_name}--> <!--{$bill->worker()->operator_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>顧客担当者</label></th>
-                                <td><!--{$trade->customer()->company()->company_name}--> <!--{$trade->customer()->operator_name}--></td>
+                                <td><!--{$bill->customer()->company()->company_name}--> <!--{$bill->customer()->operator_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>取引種別</label></th>
-                                <td><!--{$trade->tradeType()->trade_type_name}--></td>
+                                <td><!--{$bill->type()->type_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>取引ステータス</label></th>
-                                <td><!--{$trade->tradeStatus()->trade_status_name}--></td>
+                                <td><!--{$bill->status()->status_name}--></td>
                             </tr>
                             <tr>
                                 <td colspan="2">
                                 <table id="detail" class="table table-striped table-bordered">
                                 <tr><th>名称</th><th>単価</th><th>数量</th><th>消費税区分</th><th>小計</th></tr>
-                                <!--{assign var="details" value=$trade->details()}-->
+                                <!--{assign var="details" value=$bill->details()}-->
                                 <!--{foreach from=$details item="detail"}-->
                                 <tr>
-                                    <td><!--{$detail->trade_detail_name}--></td>
+                                    <td><!--{$detail->bill_detail_name}--></td>
                                     <td><!--{$detail->price|number_format}-->円</td>
                                     <td><!--{$detail->quantity|number_format}--></td>
                                     <td>
@@ -87,53 +87,67 @@
                                 <!--{/foreach}-->
                                 <tr>
                                     <td colspan="4">小計</td>
-                                    <td><!--{$trade->subtotal|number_format}-->円</td>
+                                    <td><!--{$bill->subtotal|number_format}-->円</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">消費税</td>
-                                    <td><!--{$trade->tax|number_format}-->円</td>
+                                    <td><!--{$bill->tax|number_format}-->円</td>
                                 </tr>
+                                <!--{if $bill->adjust > 0}-->
                                 <tr>
                                     <td colspan="4">合計金額</td>
-                                    <td><!--{$trade->total|number_format}-->円</td>
+                                    <td><!--{$bill->total|number_format}-->円</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><!--{$bill->adjust_title|default:"調整金額"}--></td>
+                                    <td><!--{$bill->adjust|number_format}-->円</td>
+                                </tr>
+                                <!--{/if}-->
+                                <tr>
+                                    <td colspan="4">入金予定金額</td>
+                                    <td><!--{$bill->payment_total|number_format}-->円</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">入金済み金額</td>
+                                    <td><!--{$bill->payed_total|number_format}-->円</td>
                                 </tr>
                                 </table>
                                 </td>
                             </tr>
                             <tr>
-                                <th><label>案件開始日</label></th>
-                                <td><!--{$trade->start_date|date_format:"%Y年%m月%d日"}--></td>
-                            </tr>
-                            <tr>
                                 <th><label>見積作成日</label></th>
-                                <td><!--{$trade->planed_date|date_format:"%Y年%m月%d日"}--></tr>
+                                <td><!--{$bill->quotation_date|date_format:"%Y年%m月%d日"}--></tr>
                             <tr>
                                 <th><label>注文日</label></th>
-                                <td><!--{$trade->ordered_date|date_format:"%Y年%m月%d日"}--></td>
+                                <td><!--{$bill->ordered_date|date_format:"%Y年%m月%d日"}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>納品予定日</label></th>
+                                <td><!--{$bill->deliver_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>納品日</label></th>
-                                <td><!--{$trade->delivered_date|date_format:"%Y年%m月%d日"}--></td>
+                                <td><!--{$bill->delivered_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>請求日</label></th>
-                                <td><!--{$trade->billing_date|date_format:"%Y年%m月%d日"}--></td>
+                                <td><!--{$bill->billing_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>支払い期限日</label></th>
-                                <td><!--{$trade->payment_date|date_format:"%Y年%m月%d日"}--></td>
+                                <td><!--{$bill->payment_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>入金確認日</label></th>
-                                <td><!--{$trade->complete_date|date_format:"%Y年%m月%d日"}--></td>
+                                <td><!--{$bill->complete_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>特記事項</label></th>
-                                <td><!--{$trade->description|nl2br}--></td>
+                                <td><!--{$bill->description|nl2br}--></td>
                             </tr>
                             <tr>
                                 <th><label>コメント（非表示）</label></th>
-                                <td><!--{$trade->comment|nl2br}--></td>
+                                <td><!--{$bill->comment|nl2br}--></td>
                             </tr>
                         </tbody>
                     </table>

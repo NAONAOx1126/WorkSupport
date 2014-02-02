@@ -4,8 +4,8 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="loadmodule" content="Admin.Login" error="login.html" />
-<meta name="loadmodule" content="Admin.TradeSplit.Delete" />
-<meta name="loadmodule" content="Admin.TradeSplit.Page" />
+<meta name="loadmodule" content="Trade.Split.Delete" />
+<meta name="loadmodule" content="Trade.Split.Page" />
 <meta name="loadmodule" content="Input.Reset" />
 <!--{include file="common/header.html" subtitle=$configure.f_split}-->
 
@@ -23,7 +23,7 @@
                     <h3><!--{$configure.f_split}--> - <!--{$configure.s_index}--></h3>
                 </div>
             </div>
-            <div id="pagelink"><!--{$attr.tradeSplits_pager->getPageLink()}--><p class="total">全<!--{$attr.tradeSplits_pager->getDataSize()|number_format}-->件</p></div>
+            <div id="pagelink"><!--{$attr.splits_pager->getPageLink()}--><p class="total">全<!--{$attr.splits_pager->getDataSize()|number_format}-->件</p></div>
             
             <div><a href="new.html" class="btn btn-default">新規登録</a></div>
         <div class="w-box w-box-green">
@@ -37,16 +37,16 @@
             <th class="blue header">窓口分配率（％）</th>
             <th class="blue header">&nbsp;</th>
             </tr>
-            <!--{foreach from=$attr.tradeSplits item="tradeSplit"}-->
+            <!--{foreach from=$attr.splits item="split"}-->
             <tr>
-                <td><!--{$tradeSplit->worker()->company()->company_name}--><br /><!--{$tradeSplit->worker()->operator_name}--></td>
-                <td><!--{$tradeSplit->contact()->company()->company_name}--><br /><!--{$tradeSplit->contact()->operator_name}--></td>
-                <td><!--{$tradeSplit->customer()->company()->company_name}--><br /><!--{$tradeSplit->customer()->operator_name}--></td>
-                <td><!--{$tradeSplit->tradeType()->trade_type_name}--></td>
-                <td><!--{$tradeSplit->contact_mergin_rate}-->%</td>
+                <td><!--{$split->worker()->company()->company_name}--><br /><!--{$split->worker()->operator_name}--></td>
+                <td><!--{$split->contact()->company()->company_name}--><br /><!--{$split->contact()->operator_name}--></td>
+                <td><!--{$split->customer()->company()->company_name}--><br /><!--{$split->customer()->operator_name}--></td>
+                <td><!--{$split->type()->type_name}--></td>
+                <td><!--{$split->contact_mergin_rate}-->%</td>
                 <td>
-                <a href="edit.html?trade_split_id=<!--{$tradeSplit->trade_split_id}-->" class="btn btn-default">編集</a>
-                <a href="index.html?delete=1&trade_split_id=<!--{$tradeSplit->trade_split_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$tradeSplit->worker()->operator_name}--> → <!--{$tradeSplit->customer()->operator_name}-->を削除します。よろしいですか？')">削除</a>
+                <a href="edit.html?split_id=<!--{$split->split_id}-->" class="btn btn-default">編集</a>
+                <a href="index.html?delete=1&split_id=<!--{$split->split_id}-->" class="btn btn-danger" onclick="return confirm('<!--{$split->worker()->operator_name}--> → <!--{$split->customer()->operator_name}-->を削除します。よろしいですか？')">削除</a>
                 </td>
             </tr>
             <!--{/foreach}-->

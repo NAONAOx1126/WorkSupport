@@ -3,8 +3,7 @@
         "naonaox1126/vizualizer": "dev-develop",
         "naonaox1126/vizualizer_address": "dev-develop",
         "naonaox1126/vizualizer_admin": "dev-develop",
-        "naonaox1126/vizualizer_member": "dev-develop",
-        "naonaox1126/vizualizer_shop": "dev-develop",
+        "naonaox1126/vizualizer_trade": "dev-develop",
         "smarty/smarty": ">=3.1.0",
         "PHPOffice/PHPExcel": "1.7.8"
     }, 
@@ -12,8 +11,7 @@
         "naonaox1126/vizualizer": "dev-develop",
         "naonaox1126/vizualizer_address": "dev-develop",
         "naonaox1126/vizualizer_admin": "dev-develop",
-        "naonaox1126/vizualizer_member": "dev-develop",
-        "naonaox1126/vizualizer_shop": "dev-develop",
+        "naonaox1126/vizualizer_trade": "dev-develop",
         "smarty/smarty": "dev-trunk",
         "PHPOffice/PHPExcel": "1.7.8"
     },

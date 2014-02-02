@@ -34,7 +34,9 @@ Vizualizer_Configure::set("f_staff", "自社担当者管理");
 Vizualizer_Configure::set("f_split", "自社間分配比率管理");
 Vizualizer_Configure::set("f_customer", "顧客法人管理");
 Vizualizer_Configure::set("f_contact", "顧客管理");
-Vizualizer_Configure::set("f_trade", "案件管理");
+Vizualizer_Configure::set("f_bill", "請求案件管理");
+Vizualizer_Configure::set("f_payment", "入金管理");
+Vizualizer_Configure::set("f_seo", "SEO系案件管理");
 
 // 画面名
 Vizualizer_Configure::set("s_index", "一覧画面");

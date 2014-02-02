@@ -5,20 +5,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="loadmodule" content="Admin.Login" error="login.html" />
 <meta name="loadmodule" content="Admin.Operator.Detail" />
-<meta name="loadmodule" content="Admin.TradeType.List" mode="select" select="trade_type_id|trade_type_name" />
-<meta name="loadmodule" content="Admin.TradeStatus.List" mode="select" select="trade_status_id|trade_status_name" />
+<meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
+<meta name="loadmodule" content="Trade.Status.List" mode="select" select="status_id|status_name" />
 
-<!--{include file="common/header.html" subtitle=$configure.f_trade}-->
+<!--{include file="common/header.html" subtitle=$configure.f_bill}-->
 </head>
 <body class="bg_d">
     <div class="main-wrapper">
         <!--{include file="common/menu.html"}-->
-        <!--{assign var="trade" value=$post}-->
+        <!--{assign var="bill" value=$post}-->
         <div class="container">
             <div class="row-fluid">
                 <div class="span12">
                     <div class="w-box-header">
-                        <h3><!--{$configure.f_trade}--> - <!--{$configure.s_edit}--></h3>
+                        <h3><!--{$configure.f_bill}--> - <!--{$configure.s_edit}--></h3>
                     </div>
                     <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
                     <div class="alert alert-danger">
@@ -36,29 +36,29 @@
                             <tbody>
                                 <tr>
                                     <th><label>取引名称</label></th>
-                                    <td><!--{$trade.trade_name}--></td>
+                                    <td><!--{$bill.bill_name}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>作業担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($trade.worker_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($bill.worker_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>顧客担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($trade.customer_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($bill.customer_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>取引種別</label></th>
-                                    <td><!--{$attr.tradeTypes[$trade.trade_type_id]}--></td>
+                                    <td><!--{$attr.types[$bill.type_id]}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>取引ステータス</label></th>
-                                    <td><!--{$attr.tradeStatuses[$trade.trade_status_id]}--></td>
+                                    <td><!--{$attr.statuses[$bill.status_id]}--></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -66,9 +66,9 @@
                                     <tr><th>名称</th><th>単価</th><th>数量</th><th>消費税区分</th></tr>
                                     <!--{assign var="details" value=$post.details}-->
                                     <!--{foreach from=$details key="index" item="detail"}-->
-                                    <!--{if $detail.trade_detail_name != "" && $detail.price != "" && $detail.quantity != ""}-->
+                                    <!--{if $detail.bill_detail_name != "" && $detail.price != "" && $detail.quantity != ""}-->
                                     <tr>
-                                        <td><!--{$detail.trade_detail_name}--></td>
+                                        <td><!--{$detail.bill_detail_name}--></td>
                                         <td><!--{$detail.price|number_format}-->円</td>
                                         <td><!--{$detail.quantity}--></td>
                                         <td>
@@ -82,37 +82,43 @@
                                     </table>
                                     </td>
                                 </tr>
+                                <!--{if $bill.adjust > 0}-->
                                 <tr>
-                                    <th><label>案件開始日</label></th>
-                                    <td><!--{$trade.start_date}--></td>
+                                    <th><label>調整金額</label></th>
+                                    <td>「<!--{$bill.adjust_title|default:"調整金額"}-->」として<!--{$bill.adjust|number_format}-->円</td>
                                 </tr>
+                                <!--{/if}-->
                                 <tr>
                                     <th><label>見積作成日</label></th>
-                                    <td><!--{$trade.planed_date}--></td>
+                                    <td><!--{$bill.quotation_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>注文日</label></th>
-                                    <td><!--{$trade.ordered_date}--></td>
+                                    <td><!--{$bill.ordered_date}--></td>
+                                </tr>
+                                <tr>
+                                    <th><label>納品予定日</label></th>
+                                    <td><!--{$bill.deliver_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>納品日</label></th>
-                                    <td><!--{$trade.delivered_date}--></td>
+                                    <td><!--{$bill.delivered_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>請求日</label></th>
-                                    <td><!--{$trade.billing_date}--></td>
+                                    <td><!--{$bill.billing_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>入金確認日</label></th>
-                                    <td><!--{$trade.payed_date}--></td>
+                                    <td><!--{$bill.payed_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>特記事項</label></th>
-                                    <td><!--{$trade.description|escape|nl2br}--></td>
+                                    <td><!--{$bill.description|escape|nl2br}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>コメント</label></th>
-                                    <td><!--{$trade.comment|escape|nl2br}--></td>
+                                    <td><!--{$bill.comment|escape|nl2br}--></td>
                                 </tr>
                             </tbody>
                             <tbody>
