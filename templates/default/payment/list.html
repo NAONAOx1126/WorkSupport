@@ -26,6 +26,17 @@
                 <div class="w-box-header">
                     <h3>【<!--{$company->company_name}-->】<!--{$configure.f_payment}--> - <!--{$configure.s_index}--></h3>
                 </div>
+                <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                <div class="alert alert-danger">
+                    <ul>
+                        <!--{foreach from=$ERRORS item="error"}-->
+                        <li>
+                            <!--{$error}-->
+                        </li>
+                        <!--{/foreach}-->
+                    </ul>
+                </div>
+                <!--{/if}-->
             </div>
             
             <div class="w-box-content cnt_a">

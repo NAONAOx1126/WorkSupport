@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Trade.Agent.Upload" label="B2" title="3" start="4" error="seo/index.html" />
+<meta name="redirect" content="index.html">
+<!--{include file="common/header.html" subtitle=$configure.f_seo}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_payment}--> - <!--{$configure.s_complete}--></h3>
+                    </div>
+                    アップロード完了しました。
+                    <div class="form_actions">
+                        <a href="list.html?search[company_id]=<!--{$post.company_id}-->" class="btn btn-primary"><!--{$configure.f_payment}--> <!--{$configure.s_index}-->に戻る</a>
+                    </div>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>
