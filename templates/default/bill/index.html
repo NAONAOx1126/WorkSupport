@@ -114,6 +114,9 @@
                     <a href="pdf/deliver.html?bill_ids=<!--{foreach from=$attr.allBills key="index" item="bill"}--><!--{if $index > 0}-->,<!--{/if}--><!--{$bill->bill_id}--><!--{/foreach}-->" class="btn btn-default" target="_blank">納品書一括出力</a>
                     <a href="pdf/bill.html?bill_ids=<!--{foreach from=$attr.allBills key="index" item="bill"}--><!--{if $index > 0}-->,<!--{/if}--><!--{$bill->bill_id}--><!--{/foreach}-->" class="btn btn-default" target="_blank">請求書一括出力</a>
                 </div>
+                <div class="btn-group">
+                    <a href="download.html" class="btn btn-default">請求一覧をダウンロード</a>
+                </div>
             </div>
             
             <div class="w-box w-box-green">
