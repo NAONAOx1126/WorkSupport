@@ -76,7 +76,7 @@
                                     <tr>
                                         <td><!--{$detail.product_name}--></td>
                                         <td><!--{$detail.price|number_format}-->円</td>
-                                        <td><!--{$detail.quantity}--></td>
+                                        <td><!--{$detail.quantity}--><!--{$detail.unit}--></td>
                                         <td>
                                         <!--{if $detail.tax_type == "1"}-->外税 <!--{$detail.tax_rate}-->%<!--{/if}-->
                                         <!--{if $detail.tax_type == "2"}-->内税 <!--{$detail.tax_rate}-->%<!--{/if}-->

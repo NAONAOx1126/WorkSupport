@@ -75,7 +75,7 @@
                                 <tr>
                                     <td><!--{$detail->product_name|escape}--></td>
                                     <td><!--{$detail->price|number_format}-->円</td>
-                                    <td><!--{$detail->quantity|number_format}--></td>
+                                    <td><!--{$detail->quantity|number_format}--><!--{$detail->unit}--></td>
                                     <td>
                                         <!--{if $detail->tax_type == "1"}-->外税 <!--{$detail->tax_rate}-->%<!--{/if}-->
                                         <!--{if $detail->tax_type == "2"}-->内税 <!--{$detail->tax_rate}-->%<!--{/if}-->
@@ -85,31 +85,31 @@
                                 </tr>
                                 <!--{/foreach}-->
                                 <tr>
-                                    <td colspan="4">小計</td>
+                                    <td colspan="3">小計</td>
                                     <td><!--{$bill->subtotal|number_format}-->円</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4">消費税</td>
+                                    <td colspan="3">消費税</td>
                                     <td><!--{$bill->tax|number_format}-->円</td>
                                 </tr>
                                 <!--{if $bill->discount > 0}-->
                                 <tr>
-                                    <td colspan="4"><!--{$bill->discount_title|default:"割引金額"}--></td>
+                                    <td colspan="3"><!--{$bill->discount_title|default:"割引金額"}--></td>
                                     <td><!--{$bill->discount|number_format}-->円</td>
                                 </tr>
                                 <!--{/if}-->
                                 <!--{if $bill->adjust > 0}-->
                                 <tr>
-                                    <td colspan="4"><!--{$bill->adjust_title|default:"調整金額"}--></td>
+                                    <td colspan="3"><!--{$bill->adjust_title|default:"調整金額"}--></td>
                                     <td><!--{$bill->adjust|number_format}-->円</td>
                                 </tr>
                                 <!--{/if}-->
                                 <tr>
-                                    <td colspan="4">合計金額</td>
+                                    <td colspan="3">合計金額</td>
                                     <td><!--{$bill->total|number_format}-->円</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4">入金済み金額</td>
+                                    <td colspan="3">入金済み金額</td>
                                     <td><!--{$bill->payed_total|number_format}-->円</td>
                                 </tr>
                                 </table>
