@@ -6,9 +6,9 @@
 <meta name="loadmodule" content="Admin.Login" error="admin/login.html" />
 <meta name="loadmodule" content="Admin.Operator.Detail" />
 <meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
-<meta name="loadmodule" content="Error.Check.Require" key="worker_operator_id" value="作業担当者" />
+<meta name="loadmodule" content="Error.Check.Require" key="source_operator_id" value="作業担当者" />
 <meta name="loadmodule" content="Error.Check.Require" key="contact_operator_id" value="窓口担当者" />
-<meta name="loadmodule" content="Error.Check.Require" key="customer_operator_id" value="顧客担当者" />
+<meta name="loadmodule" content="Error.Check.Require" key="dest_operator_id" value="顧客担当者" />
 <meta name="loadmodule" content="Error.Check.Require" key="contact_mergin_rate" value="窓口分配率" />
 <meta name="loadmodule" content="Error.Check.Number" key="contact_mergin_rate" value="窓口分配率" />
 <meta name="loadmodule" content="Error.Exception" error="split/edit.html" />
@@ -30,7 +30,7 @@
                                 <tr>
                                     <th><label>作業担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($split.worker_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($split.source_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>
@@ -44,7 +44,7 @@
                                 <tr>
                                     <th><label>顧客担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($split.customer_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($split.dest_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>

@@ -36,29 +36,29 @@
                             <tbody>
                                 <tr>
                                     <th><label>取引名称</label></th>
-                                    <td><!--{$bill.bill_name}--></td>
+                                    <td><!--{$bill.trade_name|escape}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>作業担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($bill.worker_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($bill.source_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>顧客担当者</label></th>
                                     <td>
-                                        <!--{$attr.operator->findByPrimaryKey($bill.customer_operator_id)}-->
+                                        <!--{$attr.operator->findByPrimaryKey($bill.source_operator_id)}-->
                                         <!--{$attr.operator->company()->company_name}--> <!--{$attr.operator->operator_name}-->
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><label>取引種別</label></th>
-                                    <td><!--{$attr.types[$bill.type_id]}--></td>
+                                    <td><!--{$attr.types[$bill.trade_type]}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>取引ステータス</label></th>
-                                    <td><!--{$attr.statuses[$bill.status_id]}--></td>
+                                    <td><!--{$attr.statuses[$bill.trade_status]}--></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">
@@ -66,9 +66,9 @@
                                     <tr><th>名称</th><th>単価</th><th>数量</th><th>消費税区分</th></tr>
                                     <!--{assign var="details" value=$post.details}-->
                                     <!--{foreach from=$details key="index" item="detail"}-->
-                                    <!--{if $detail.bill_detail_name != "" && $detail.price != "" && $detail.quantity != ""}-->
+                                    <!--{if $detail.product_name != "" && $detail.price != "" && $detail.quantity != ""}-->
                                     <tr>
-                                        <td><!--{$detail.bill_detail_name}--></td>
+                                        <td><!--{$detail.product_name|escape}--></td>
                                         <td><!--{$detail.price|number_format}-->円</td>
                                         <td><!--{$detail.quantity}--></td>
                                         <td>
@@ -82,6 +82,12 @@
                                     </table>
                                     </td>
                                 </tr>
+                                <!--{if $bill.discount > 0}-->
+                                <tr>
+                                    <th><label>割引金額</label></th>
+                                    <td>「<!--{$bill.discount_title|default:"割引金額"}-->」として<!--{$bill.discount|number_format}-->円</td>
+                                </tr>
+                                <!--{/if}-->
                                 <!--{if $bill.adjust > 0}-->
                                 <tr>
                                     <th><label>調整金額</label></th>
@@ -111,6 +117,10 @@
                                 <tr>
                                     <th><label>入金確認日</label></th>
                                     <td><!--{$bill.payed_date}--></td>
+                                </tr>
+                                <tr>
+                                    <th><label>次回請求予定日</label></th>
+                                    <td><!--{$bill.next_billing_date}--></td>
                                 </tr>
                                 <tr>
                                     <th><label>特記事項</label></th>

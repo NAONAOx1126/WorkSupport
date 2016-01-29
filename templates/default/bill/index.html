@@ -19,7 +19,7 @@
 
 <div class="container">
     <div class="row-fluid">
-        <div class="span12"> 
+        <div class="span12">
             <div class="w-box w-box-blue hideable">
                 <div class="w-box-header">
                     <h3><!--{$configure.f_bill}--> - <!--{$configure.s_index}--></h3>
@@ -31,13 +31,13 @@
                             <tbody>
                                 <tr>
                                     <th><label>案件名</label></th>
-                                    <td><input type="text" name="search[bill_name]" value="<!--{$search.bill_name}-->" class="form-control" /></td>
+                                    <td><input type="text" name="search[part:trade_name]" value="<!--{$search["part:trade_name"]}-->" class="form-control" /></td>
                                     <th><label>担当者</label></th>
                                     <td>
-                                        <select name="search[worker_operator_id]" class="form-control">
+                                        <select name="search[source_operator_id]" class="form-control">
                                         <option value="">----------</option>
                                         <!--{foreach from=$attr[VizualizerAdmin::KEY]->company()->operators() item="operator"}-->
-                                        <option value="<!--{$operator->operator_id}-->"<!--{if $search.worker_operator_id == $operator->operator_id}--> selected<!--{/if}-->>
+                                        <option value="<!--{$operator->operator_id}-->"<!--{if $search.source_operator_id == $operator->operator_id}--> selected<!--{/if}-->>
                                         <!--{$operator->operator_name}-->
                                         </option>
                                         <!--{/foreach}-->
@@ -67,16 +67,16 @@
                                 <tr>
                                     <th><label>取引種別</label></th>
                                     <td>
-                                    <select name="search[type_id]" class="form-control">
+                                    <select name="search[trade_type]" class="form-control">
                                     <option value="">----------</option>
-                                    <!--{html_options options=$attr.types selected=$search.type_id}-->
+                                    <!--{html_options options=$attr.types selected=$search.trade_type}-->
                                     </select>
                                     </td>
                                     <th><label>取引ステータス</label></th>
                                     <td>
-                                    <select name="search[status_id]" class="form-control">
+                                    <select name="search[trade_status]" class="form-control">
                                     <option value="">----------</option>
-                                    <!--{html_options options=$attr.statuses selected=$search.status_id}-->
+                                    <!--{html_options options=$attr.statuses selected=$search.trade_status}-->
                                     </select>
                                     </td>
                                 </tr>
@@ -105,7 +105,7 @@
             </div>
             <!--{/if}-->
             <div id="pagelink"><!--{$attr.bills_pager->getPageLink()}--><p class="total">全<!--{$attr.bills_pager->getDataSize()|number_format}-->件</p></div>
-            
+
             <div class="btn-toolbar">
                 <div class="btn-group">
                     <a href="new.html" class="btn btn-default">新規登録</a>
@@ -118,7 +118,7 @@
                     <a href="download.html" class="btn btn-default">請求一覧をダウンロード</a>
                 </div>
             </div>
-            
+
             <div class="w-box w-box-green">
                 <div class="w-box-content cnt_a">
                 <table class="table table-bordered table-striped" summary="一覧">
@@ -133,14 +133,15 @@
                 </tr>
                 <!--{foreach from=$attr.bills item="bill"}-->
                 <tr>
-                    <td><!--{$bill->bill_name}--></td>
-                    <td><!--{$bill->worker()->company()->company_name}--><br /><!--{$bill->worker()->operator_name}--></td>
-                    <td><!--{$bill->customer()->company()->company_name}--><br /><!--{$bill->customer()->operator_name}--></td>
-                    <td><!--{$bill->payment_total|number_format}-->円</td>
+                    <td><!--{$bill->trade_name}--></td>
+                    <td><!--{$bill->source()->company()->company_name}--><br /><!--{$bill->source()->operator_name}--></td>
+                    <td><!--{$bill->dest()->company()->company_name}--><br /><!--{$bill->dest()->operator_name}--></td>
+                    <td><!--{$bill->total|number_format}-->円</td>
                     <td><!--{$bill->status()->status_name}--></td>
                     <td><!--{$bill->payment_date|date_format:"%Y年%m月"}--></td>
                     <td>
                     <a href="detail.html?bill_id=<!--{$bill->bill_id}-->" class="btn btn-default">詳細</a>
+                    <a href="copy.html?bill_id=<!--{$bill->bill_id}-->" class="btn btn-default">コピー</a>
                     </td>
                 </tr>
                 <!--{/foreach}-->
@@ -151,7 +152,7 @@
         <!--/span-->
     </div>
     <!--/row-->
-    
+
 </div>
 
 <hr>

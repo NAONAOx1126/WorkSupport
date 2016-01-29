@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
+<meta name="loadmodule" content="Trade.Status.List" mode="select" select="status_id|status_name" />
+<meta name="loadmodule" content="Trade.Quotation.List" result="all" />
+<meta name="loadmodule" content="Trade.Quotation.Page" />
+<meta name="loadmodule" content="Input.Reset" />
+<!--{include file="common/header.html" subtitle=$configure.f_quotation}-->
+
+</head>
+<body class="bg_d">
+<div class="main-wrapper">
+
+<!--{include file="common/menu.html"}-->
+
+<div class="container">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="w-box w-box-blue hideable">
+                <div class="w-box-header">
+                    <h3><!--{$configure.f_quotation}--> - <!--{$configure.s_index}--></h3>
+                </div>
+                <div class="w-box-content cnt_a">
+                    <!--{assign var="search" value=$post.search}-->
+                    <form class="well" action="index.html" method="POST">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>案件名</label></th>
+                                    <td><input type="text" name="search[part:trade_name]" value="<!--{$search["part:trade_name"]}-->" class="form-control" /></td>
+                                    <th><label>担当者</label></th>
+                                    <td>
+                                        <select name="search[source_operator_id]" class="form-control">
+                                        <option value="">----------</option>
+                                        <!--{foreach from=$attr[VizualizerAdmin::KEY]->company()->operators() item="operator"}-->
+                                        <option value="<!--{$operator->operator_id}-->"<!--{if $search.source_operator_id == $operator->operator_id}--> selected<!--{/if}-->>
+                                        <!--{$operator->operator_name}-->
+                                        </option>
+                                        <!--{/foreach}-->
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引種別</label></th>
+                                    <td>
+                                    <select name="search[trade_type]" class="form-control">
+                                    <option value="">----------</option>
+                                    <!--{html_options options=$attr.types selected=$search.trade_type}-->
+                                    </select>
+                                    </td>
+                                    <th><label>取引ステータス</label></th>
+                                    <td>
+                                    <select name="search[trade_status]" class="form-control">
+                                    <option value="">----------</option>
+                                    <!--{html_options options=$attr.statuses selected=$search.trade_status}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="exec_search" id="" value="上記の条件で検索する" class="btn btn-primary" /> <input type="submit" name="reset" id="reset" value="リセット" class="btn btn-warning" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+            <div class="alert alert-danger">
+                <ul>
+                    <!--{foreach from=$ERRORS item="error"}-->
+                    <li>
+                        <!--{$error}-->
+                    </li>
+                    <!--{/foreach}-->
+                </ul>
+            </div>
+            <!--{/if}-->
+            <div id="pagelink"><!--{$attr.quotations_pager->getPageLink()}--><p class="total">全<!--{$attr.quotations_pager->getDataSize()|number_format}-->件</p></div>
+
+            <div class="btn-toolbar">
+                <div class="btn-group">
+                    <a href="new.html" class="btn btn-default">新規登録</a>
+                </div>
+                <div class="btn-group">
+                    <a href="pdf/quotation.html?quotation_ids=<!--{foreach from=$attr.all key="index" item="quotation"}--><!--{if $index > 0}-->,<!--{/if}--><!--{$quotation->quotation_id}--><!--{/foreach}-->" class="btn btn-default" target="_blank">見積書一括出力</a>
+                </div>
+            </div>
+
+            <div class="w-box w-box-green">
+                <div class="w-box-content cnt_a">
+                <table class="table table-bordered table-striped" summary="一覧">
+                <tr>
+                <th class="blue header">取引名称</th>
+                <th class="blue header">作業担当者</th>
+                <th class="blue header">顧客担当者</th>
+                <th class="blue header">入金予定金額</th>
+                <th class="blue header">ステータス</th>
+                <th class="blue header">見積年月</th>
+                <th class="blue header">&nbsp;</th>
+                </tr>
+                <!--{foreach from=$attr.quotations item="quotation"}-->
+                <tr>
+                    <td><!--{$quotation->trade_name}--></td>
+                    <td><!--{$quotation->source()->company()->company_name}--><br /><!--{$quotation->source()->operator_name}--></td>
+                    <td><!--{$quotation->dest()->company()->company_name}--><br /><!--{$quotation->dest()->operator_name}--></td>
+                    <td><!--{$quotation->total|number_format}-->円</td>
+                    <td><!--{$quotation->status()->status_name}--></td>
+                    <td><!--{$quotation->quotation_date|date_format:"%Y年%m月"}--></td>
+                    <td>
+                    <a href="detail.html?quotation_id=<!--{$quotation->quotation_id}-->" class="btn btn-default">詳細</a>
+                    </td>
+                </tr>
+                <!--{/foreach}-->
+                </table>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+
+</div>
+
+<hr>
+<!--{include file="common/footer.html"}-->
+</div>
+<!--{include file="common/script.html"}-->
+<script type="text/javascript">
+$("#billing_date").datepicker({
+	minViewMode: 1,
+	autoclose: true,
+	clearBtn: true,
+	format: "yyyy-mm"
+});
+$("#delivered_date").datepicker({
+	minViewMode: 1,
+	autoclose: true,
+	clearBtn: true,
+	format: "yyyy-mm"
+});
+</script>
+</body>
+</html>

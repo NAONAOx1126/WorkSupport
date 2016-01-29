@@ -38,19 +38,19 @@
                             <tbody>
                                 <tr>
                                     <th><label>取引名称</label></th>
-                                    <td><input type="text" name="bill_name" class="form-control" value="<!--{$bill->bill_name|input:"bill_name"}-->" /></td>
+                                    <td><input type="text" name="trade_name" class="form-control" value="<!--{$bill->trade_name|input:"trade_name"}-->" /></td>
                                 </tr>
                                 <tr>
                                     <th><label>作業担当者</label></th>
                                     <td>
                                     <!--{if $bill->bill_id > 0}-->
-                                    <input type="hidden" name="worker_operator_id" value="<!--{$bill->worker_operator_id}-->" />
-                                    <!--{$bill->worker()->company()->company_name}--> <!--{$bill->worker()->operator_name}-->
+                                    <input type="hidden" name="source_operator_id" value="<!--{$bill->source_operator_id}-->" />
+                                    <!--{$bill->source()->company()->company_name}--> <!--{$bill->source()->operator_name}-->
                                     <!--{else}-->
-                                    <select name="worker_operator_id" class="form-control">
-                                    <!--{assign var="worker_operator_id" value=$bill->worker_operator_id|input:"worker_operator_id"}-->
+                                    <select name="source_operator_id" class="form-control">
+                                    <!--{assign var="source_operator_id" value=$bill->source_operator_id|input:"source_operator_id"}-->
                                     <!--{foreach from=$attr.staffs item="staff"}-->
-                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $worker_operator_id}--> selected<!--{/if}-->>
+                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $source_operator_id}--> selected<!--{/if}-->>
                                     <!--{$staff->company()->company_name}--> <!--{$staff->operator_name}-->
                                     </option>
                                     <!--{/foreach}-->
@@ -62,13 +62,13 @@
                                     <th><label>顧客担当者</label></th>
                                     <td>
                                     <!--{if $bill->bill_id > 0}-->
-                                    <input type="hidden" name="customer_operator_id" value="<!--{$bill->customer_operator_id}-->" />
-                                    <!--{$bill->customer()->company()->company_name}--> <!--{$bill->customer()->operator_name}-->
+                                    <input type="hidden" name="dest_operator_id" value="<!--{$bill->dest_operator_id}-->" />
+                                    <!--{$bill->dest()->company()->company_name}--> <!--{$bill->dest()->operator_name}-->
                                     <!--{else}-->
-                                    <select name="customer_operator_id" class="form-control">
-                                    <!--{assign var="customer_operator_id" value=$bill->customer_operator_id|input:"customer_operator_id"}-->
+                                    <select name="dest_operator_id" class="form-control">
+                                    <!--{assign var="dest_operator_id" value=$bill->dest_operator_id|input:"dest_operator_id"}-->
                                     <!--{foreach from=$attr.customers item="customer"}-->
-                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $customer_operator_id}--> selected<!--{/if}-->>
+                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $dest_operator_id}--> selected<!--{/if}-->>
                                     <!--{$customer->company()->company_name}--> <!--{$customer->operator_name}-->
                                     </option>
                                     <!--{/foreach}-->
@@ -77,36 +77,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><label>案件種別種別</label></th>
-                                    <td>
-                                    <!--{if $bill->bill_id > 0}-->
-                                    <input type="hidden" name="continue_interval" value="<!--{$bill->continue_interval}-->" />
-                                    <!--{if $bill->continue_interval == "0"}-->通常（受託）<!--{/if}-->
-                                    <!--{if $bill->continue_interval == "1"}-->継続案件（月額決済）<!--{/if}-->
-                                    <!--{if $bill->continue_interval == "3"}-->継続案件（四半期決済）<!--{/if}-->
-                                    <!--{if $bill->continue_interval == "6"}-->継続案件（半期決済）<!--{/if}-->
-                                    <!--{if $bill->continue_interval == "12"}-->継続案件（通期決済）<!--{/if}-->
-                                    <!--{else}-->
-                                    <select name="continue_interval" class="form-control">
-                                    <option value="0"<!--{if $bill->continue_interval == "0"}--> selected<!--{/if}-->>通常（受託）</option>
-                                    <option value="1"<!--{if $bill->continue_interval == "1"}--> selected<!--{/if}-->>継続案件（月額決済）</option>
-                                    <option value="3"<!--{if $bill->continue_interval == "3"}--> selected<!--{/if}-->>継続案件（四半期決済）</option>
-                                    <option value="6"<!--{if $bill->continue_interval == "6"}--> selected<!--{/if}-->>継続案件（半期決済）</option>
-                                    <option value="12"<!--{if $bill->continue_interval == "12"}--> selected<!--{/if}-->>継続案件（通期決済）</option>
-                                    </select>
-                                    <!--{/if}-->
-                                    </td>
-                                </tr>
-                                <tr>
                                     <th><label>取引種別</label></th>
                                     <td>
                                     <!--{if $bill->bill_id > 0}-->
-                                    <input type="hidden" name="type_id" value="<!--{$bill->type_id}-->" />
+                                    <input type="hidden" name="trade_type" value="<!--{$bill->trade_type}-->" />
                                     <!--{$bill->type()->type_name}-->
                                     <!--{else}-->
-                                    <select name="type_id" class="form-control">
-                                    <!--{assign var="type_id" value=$bill->type_id|input:"type_id"}-->
-                                    <!--{html_options options=$attr.types selected=$type_id}-->
+                                    <select name="trade_type" class="form-control">
+                                    <!--{assign var="trade_type" value=$bill->trade_type|input:"trade_type"}-->
+                                    <!--{html_options options=$attr.types selected=$trade_type}-->
                                     </select>
                                     <!--{/if}-->
                                     </td>
@@ -114,9 +93,9 @@
                                 <tr>
                                     <th><label>取引ステータス</label></th>
                                     <td>
-                                    <select name="status_id" class="form-control">
-                                    <!--{assign var="status_id" value=$bill->status_id|input:"status_id"}-->
-                                    <!--{html_options options=$attr.statuses selected=$status_id}-->
+                                    <select name="trade_status" class="form-control">
+                                    <!--{assign var="trade_status" value=$bill->trade_status|input:"trade_status"}-->
+                                    <!--{html_options options=$attr.statuses selected=$trade_status}-->
                                     </select>
                                     </td>
                                 </tr>
@@ -128,9 +107,7 @@
                                     <!--{assign var="details" value=$post.details}-->
                                     <!--{foreach from=$details key="index" item="detail"}-->
                                     <tr>
-                                        <input type="hidden" name="details[<!--{$index}-->][bill_detail_id]" value="<!--{$detail.bill_detail_id}-->" />
-                                        <input type="hidden" name="details[<!--{$index}-->][related_bill_detail_id]" value="<!--{$detail.related_bill_detail_id}-->" />
-                                        <td><input type="text" class="form-control" name="details[<!--{$index}-->][bill_detail_name]" value="<!--{$detail.bill_detail_name}-->" /></td>
+                                        <td><input type="text" class="form-control" name="details[<!--{$index}-->][product_name]" value="<!--{$detail.product_name}-->" /></td>
                                         <td>
                                         <div class="controls form-inline">
                                         <div class="form-group">
@@ -161,9 +138,7 @@
                                     <!--{assign var="details" value=$bill->details()}-->
                                     <!--{foreach from=$details item="detail"}-->
                                     <tr>
-                                        <input type="hidden" name="details[<!--{$detail->bill_detail_id}-->][bill_detail_id]" value="<!--{$detail->bill_detail_id}-->" />
-                                        <input type="hidden" name="details[<!--{$detail->bill_detail_id}-->][related_bill_detail_id]" value="<!--{$detail->related_bill_detail_id}-->" />
-                                        <td><input type="text" class="form-control" name="details[<!--{$detail->bill_detail_id}-->][bill_detail_name]" value="<!--{$detail->bill_detail_name}-->" /></td>
+                                        <td><input type="text" class="form-control" name="details[<!--{$detail->bill_detail_id}-->][product_name]" value="<!--{$detail->product_name}-->" /></td>
                                         <td>
                                         <div class="controls form-inline">
                                         <div class="form-group">
@@ -192,7 +167,7 @@
                                     <!--{/foreach}-->
                                     <!--{/if}-->
                                     <tr class="blank" style="display: none;">
-                                        <td><input type="text" class="form-control" name="details[][bill_detail_name]" value="" /></td>
+                                        <td><input type="text" class="form-control" name="details[][product_name]" value="" /></td>
                                         <td>
                                         <div class="controls form-inline">
                                         <div class="form-group">
@@ -220,6 +195,24 @@
                                     </tr>
                                     </table>
                                     <input id="add_detail" type="button" class="btn btn-default" value="新しい行を追加" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>割引金額</label></th>
+                                    <td>
+                                        <div class="controls form-inline">
+                                            <label>割引内容：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="discount_title" class="form-control" value="<!--{$bill->discount_title|input:"discount_title"}-->" />
+                                            </div>
+                                        </div>
+                                        <div class="controls form-inline">
+                                            <label>割引金額：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="discount" class="form-control" value="<!--{$bill->discount|input:"discount"}-->" />
+                                            </div>
+                                            <label>円</label>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -301,6 +294,17 @@
                                         <div class="col-lg-4" style="width: 220px;">
                                         <div class="input-group date" id="complete_date" data-date="<!--{$bill->complete_date|input:"complete_date"|default:$smarty.now}-->" data-date-format="yyyy-mm-dd">
                                             <input class="form-control" size="16" type="text" name="complete_date" value="<!--{$bill->complete_date|input:"complete_date"}-->" readonly>
+                                            <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>次回請求予定日</label></th>
+                                    <td>
+                                        <div class="col-lg-4" style="width: 220px;">
+                                        <div class="input-group date" id="next_billing_date" data-date="<!--{$bill->next_billing_date|input:"next_billing_date"|default:$smarty.now}-->" data-date-format="yyyy-mm-dd">
+                                            <input class="form-control" size="16" type="text" name="next_billing_date" value="<!--{$bill->next_billing_date|input:"next_billing_date"}-->" readonly>
                                             <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
                                         </div>
                                         </div>

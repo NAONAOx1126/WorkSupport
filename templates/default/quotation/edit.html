@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Operator.List" result="staffs" force_operator="1" wkey="ne:role_id" wvalue="3" />
+<meta name="loadmodule" content="Admin.Operator.List" result="customers" force_operator="1" />
+<meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
+<meta name="loadmodule" content="Trade.Status.List" mode="select" select="status_id|status_name" />
+<meta name="loadmodule" content="Trade.Quotation.Detail" />
+<!--{include file="common/header.html" subtitle=$configure.f_quotation}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="quotation" value=$attr.quotation}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_quotation}--> - <!--{$configure.s_edit}--></h3>
+                    </div>
+                    <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                    <div class="alert alert-danger">
+                        <ul>
+                            <!--{foreach from=$ERRORS item="error"}-->
+                            <li>
+                                <!--{$error}-->
+                            </li>
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!--{/if}-->
+                    <form class="well" action="confirm.html" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="quotation_id" value="<!--{$quotation->quotation_id|input:"quotation_id"}-->" />
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th><label>取引名称</label></th>
+                                    <td><input type="text" name="trade_name" class="form-control" value="<!--{$quotation->trade_name|input:"trade_name"}-->" /></td>
+                                </tr>
+                                <tr>
+                                    <th><label>作業担当者</label></th>
+                                    <td>
+                                    <!--{if $quotation->quotation_id > 0}-->
+                                    <input type="hidden" name="source_operator_id" value="<!--{$quotation->source_operator_id}-->" />
+                                    <!--{$quotation->source()->company()->company_name}--> <!--{$quotation->source()->operator_name}-->
+                                    <!--{else}-->
+                                    <select name="source_operator_id" class="form-control">
+                                    <!--{assign var="source_operator_id" value=$quotation->source_operator_id|input:"source_operator_id"}-->
+                                    <!--{foreach from=$attr.staffs item="staff"}-->
+                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $source_operator_id}--> selected<!--{/if}-->>
+                                    <!--{$staff->company()->company_name}--> <!--{$staff->operator_name}-->
+                                    </option>
+                                    <!--{/foreach}-->
+                                    </select>
+                                    <!--{/if}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>顧客担当者</label></th>
+                                    <td>
+                                    <!--{if $quotation->quotation_id > 0}-->
+                                    <input type="hidden" name="dest_operator_id" value="<!--{$quotation->dest_operator_id}-->" />
+                                    <!--{$quotation->dest()->company()->company_name}--> <!--{$quotation->dest()->operator_name}-->
+                                    <!--{else}-->
+                                    <select name="dest_operator_id" class="form-control">
+                                    <!--{assign var="dest_operator_id" value=$quotation->dest_operator_id|input:"dest_operator_id"}-->
+                                    <!--{foreach from=$attr.customers item="customer"}-->
+                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $dest_operator_id}--> selected<!--{/if}-->>
+                                    <!--{$customer->company()->company_name}--> <!--{$customer->operator_name}-->
+                                    </option>
+                                    <!--{/foreach}-->
+                                    </select>
+                                    <!--{/if}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>継続案件</label></th>
+                                    <td>
+                                    <label>
+                                        <!--{assign var="continue_flg" value=$quotation->continue_flg|input:"continue_flg"}-->
+                                        <input type="hidden" name="continue_flg" value="0" />
+                                        <input type="checkbox" name="continue_flg" value="1"<!--{if $continue_flg == "1"}--> checked<!--{/if}--> />
+                                        継続案件
+                                    </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>請求間隔</label></th>
+                                    <td>
+                                    <input type="text" name="bill_interval" value="<!--{$quotation->bill_interval|input:"bill_interval"}-->" />ヶ月
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引種別</label></th>
+                                    <td>
+                                    <!--{if $quotation->quotation_id > 0}-->
+                                    <input type="hidden" name="trade_type" value="<!--{$quotation->trade_type}-->" />
+                                    <!--{$quotation->type()->type_name}-->
+                                    <!--{else}-->
+                                    <select name="trade_type" class="form-control">
+                                    <!--{assign var="trade_type" value=$quotation->trade_type|input:"trade_type"}-->
+                                    <!--{html_options options=$attr.types selected=$trade_type}-->
+                                    </select>
+                                    <!--{/if}-->
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>取引ステータス</label></th>
+                                    <td>
+                                    <select name="trade_status" class="form-control">
+                                    <!--{assign var="trade_status" value=$quotation->trade_status|input:"trade_status"}-->
+                                    <!--{html_options options=$attr.statuses selected=$trade_status}-->
+                                    </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                    <table id="detail" class="table table-striped table-bordered">
+                                    <tr><th>名称</th><th>単価</th><th>数量</th><th>消費税区分</th></tr>
+                                    <!--{if !empty($post.details)}-->
+                                    <!--{assign var="details" value=$post.details}-->
+                                    <!--{foreach from=$details key="index" item="detail"}-->
+                                    <tr>
+                                        <td><input type="text" class="form-control" name="details[<!--{$index}-->][product_name]" value="<!--{$detail.product_name}-->" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[<!--{$index}-->][price]" value="<!--{$detail.price}-->" />
+                                        </div>
+                                        <label>円</label>
+                                        </div>
+                                        </td>
+                                        <td><input type="text" class="form-control" name="details[<!--{$index}-->][quantity]" value="<!--{$detail.quantity}-->" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <select class="form-control" name="details[<!--{$index}-->][tax_type]">
+                                        <option value="1"<!--{if $detail.tax_type == "1"}--> selected<!--{/if}-->>外税</option>
+                                        <option value="2"<!--{if $detail.tax_type == "2"}--> selected<!--{/if}-->>内税</option>
+                                        <option value="3"<!--{if $detail.tax_type == "3"}--> selected<!--{/if}-->>非課税</option>
+                                        </select>
+                                        </div>
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[<!--{$index}-->][tax_rate]" value="<!--{$detail.tax_rate}-->" />
+                                        </div>
+                                        <label>%</label>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <!--{/foreach}-->
+                                    <!--{else}-->
+                                    <!--{assign var="details" value=$quotation->details()}-->
+                                    <!--{foreach from=$details item="detail"}-->
+                                    <tr>
+                                        <td><input type="text" class="form-control" name="details[<!--{$detail->quotation_detail_id}-->][product_name]" value="<!--{$detail->product_name}-->" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[<!--{$detail->quotation_detail_id}-->][price]" value="<!--{$detail->price}-->" />
+                                        </div>
+                                        <label>円</label>
+                                        </div>
+                                        </td>
+                                        <td><input type="text" class="form-control" name="details[<!--{$detail->quotation_detail_id}-->][quantity]" value="<!--{$detail->quantity}-->" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <select class="form-control" name="details[<!--{$detail->quotation_detail_id}-->][tax_type]">
+                                        <option value="1"<!--{if $detail->tax_type == "1"}--> selected<!--{/if}-->>外税</option>
+                                        <option value="2"<!--{if $detail->tax_type == "2"}--> selected<!--{/if}-->>内税</option>
+                                        <option value="3"<!--{if $detail->tax_type == "3"}--> selected<!--{/if}-->>非課税</option>
+                                        </select>
+                                        </div>
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[<!--{$detail->quotation_detail_id}-->][tax_rate]" value="<!--{$detail->tax_rate}-->" />
+                                        </div>
+                                        <label>%</label>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    <!--{/foreach}-->
+                                    <!--{/if}-->
+                                    <tr class="blank" style="display: none;">
+                                        <td><input type="text" class="form-control" name="details[][product_name]" value="" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[][price]" value="" />
+                                        </div>
+                                        <label>円</label>
+                                        </div>
+                                        </td>
+                                        <td><input type="text" class="form-control" name="details[][quantity]" value="" /></td>
+                                        <td>
+                                        <div class="controls form-inline">
+                                        <div class="form-group">
+                                        <select class="form-control" name="details[][tax_type]">
+                                        <option value="1">外税</option>
+                                        <option value="2">内税</option>
+                                        <option value="3">非課税</option>
+                                        </select>
+                                        </div>
+                                        <div class="form-group">
+                                        <input type="text" class="form-control" name="details[][tax_rate]" value="8" />
+                                        </div>
+                                        <label>%</label>
+                                        </div>
+                                        </td>
+                                    </tr>
+                                    </table>
+                                    <input id="add_detail" type="button" class="btn btn-default" value="新しい行を追加" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>割引金額</label></th>
+                                    <td>
+                                        <div class="controls form-inline">
+                                            <label>割引内容：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="discount_title" class="form-control" value="<!--{$quotation->discount_title|input:"discount_title"}-->" />
+                                            </div>
+                                        </div>
+                                        <div class="controls form-inline">
+                                            <label>割引金額：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="discount" class="form-control" value="<!--{$quotation->discount|input:"discount"}-->" />
+                                            </div>
+                                            <label>円</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>調整金額</label></th>
+                                    <td>
+                                        <div class="controls form-inline">
+                                            <label>調整内容：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="adjust_title" class="form-control" value="<!--{$quotation->adjust_title|input:"adjust_title"}-->" />
+                                            </div>
+                                        </div>
+                                        <div class="controls form-inline">
+                                            <label>調整金額：</label>
+                                            <div class="form-group">
+                                                <input type="text" name="adjust" class="form-control" value="<!--{$quotation->adjust|input:"adjust"}-->" />
+                                            </div>
+                                            <label>円</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>見積作成日</label></th>
+                                    <td>
+                                        <div class="col-lg-4" style="width: 220px;">
+                                        <div class="input-group date" id="quotation_date" data-date="<!--{$quotation->quotation_date|input:"quotation_date"|default:$smarty.now}-->" data-date-format="yyyy-mm-dd">
+                                            <input class="form-control" size="16" type="text" name="quotation_date" value="<!--{$quotation->quotation_date|input:"quotation_date"}-->" readonly>
+                                            <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>注文日</label></th>
+                                    <td>
+                                        <div class="col-lg-4" style="width: 220px;">
+                                        <div class="input-group date" id="ordered_date" data-date="<!--{$quotation->ordered_date|input:"ordered_date"|default:$smarty.now}-->" data-date-format="yyyy-mm-dd">
+                                            <input class="form-control" size="16" type="text" name="ordered_date" value="<!--{$quotation->ordered_date|input:"ordered_date"}-->" readonly>
+                                            <span class="input-group-addon"><span class="add-on glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><label>特記事項</label></th>
+                                    <td><textarea name="description" class="form-control" rows="10"><!--{$quotation->description|input:"description"}--></textarea></td>
+                                </tr>
+                                <tr>
+                                    <th><label>コメント（非表示）</label></th>
+                                    <td><textarea name="comment" class="form-control" rows="10"><!--{$quotation->comment|input:"comment"}--></textarea></td>
+                                </tr>
+                            </tbody>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group">
+                                                <input type="submit" name="confirm" id="confirm" value="登録内容を確認" class="btn btn-primary" />
+                                                <a href="index.html?exec_search=1" class="btn btn-default">一覧に戻る</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+    <script type="text/javascript">
+    $(function(){
+        $("#add_detail").click(function(){
+            var line = $('.blank').clone(true);
+            var time = new Date().getTime();
+            line.find(".form-control").each(function(){
+            	$(this).attr("name", $(this).attr("name").replace("details[]", "details[" + time + "]"));
+            });
+            line.removeClass('blank').css('display', '').appendTo('#detail');
+        });
+
+        $("#confirm").click(function(){
+        	autoclose: true,
+            $('.blank').remove();
+        });
+        $("#quotation_date").datepicker({
+        	autoclose: true,
+        	format: "yyyy-mm-dd"
+        });
+        $("#ordered_date").datepicker({
+        	autoclose: true,
+        	format: "yyyy-mm-dd"
+        });
+    })
+    </script>
+</body>
+</html>

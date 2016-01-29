@@ -17,31 +17,31 @@
 
 <div class="container">
     <div class="row-fluid">
-        <div class="span12"> 
+        <div class="span12">
             <div class="w-box w-box-blue hideable">
                 <div class="w-box-header">
                     <h3><!--{$configure.f_split}--> - <!--{$configure.s_index}--></h3>
                 </div>
             </div>
             <div id="pagelink"><!--{$attr.splits_pager->getPageLink()}--><p class="total">全<!--{$attr.splits_pager->getDataSize()|number_format}-->件</p></div>
-            
+
             <div><a href="new.html" class="btn btn-default">新規登録</a></div>
         <div class="w-box w-box-green">
             <div class="w-box-content cnt_a">
             <table class="table table-bordered table-striped" summary="一覧">
             <tr>
-            <th class="blue header">作業担当者</th>
+            <th class="blue header">請求元担当者</th>
             <th class="blue header">窓口担当者</th>
-            <th class="blue header">顧客担当者</th>
+            <th class="blue header">請求先担当者</th>
             <th class="blue header">取引種別</th>
             <th class="blue header">窓口分配率（％）</th>
             <th class="blue header">&nbsp;</th>
             </tr>
             <!--{foreach from=$attr.splits item="split"}-->
             <tr>
-                <td><!--{$split->worker()->company()->company_name}--><br /><!--{$split->worker()->operator_name}--></td>
+                <td><!--{$split->source()->company()->company_name}--><br /><!--{$split->source()->operator_name}--></td>
                 <td><!--{$split->contact()->company()->company_name}--><br /><!--{$split->contact()->operator_name}--></td>
-                <td><!--{$split->customer()->company()->company_name}--><br /><!--{$split->customer()->operator_name}--></td>
+                <td><!--{$split->dest()->company()->company_name}--><br /><!--{$split->dest()->operator_name}--></td>
                 <td><!--{$split->type()->type_name}--></td>
                 <td><!--{$split->contact_mergin_rate}-->%</td>
                 <td>
@@ -57,7 +57,7 @@
         <!--/span-->
     </div>
     <!--/row-->
-    
+
 </div>
 
 <hr>

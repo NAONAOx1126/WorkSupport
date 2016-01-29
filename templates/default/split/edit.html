@@ -38,10 +38,10 @@
                                 <tr>
                                     <th><label>作業担当者</label></th>
                                     <td>
-                                    <select name="worker_operator_id" class="form-control">
-                                    <!--{assign var="worker_operator_id" value=$split->worker_operator_id|input:"worker_operator_id"}-->
+                                    <select name="source_operator_id" class="form-control">
+                                    <!--{assign var="source_operator_id" value=$split->source_operator_id|input:"source_operator_id"}-->
                                     <!--{foreach from=$attr.staffs item="staff"}-->
-                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $worker_operator_id}--> selected<!--{/if}-->>
+                                    <option value="<!--{$staff->operator_id}-->"<!--{if $staff->operator_id == $source_operator_id}--> selected<!--{/if}-->>
                                     <!--{$staff->company()->company_name}--> <!--{$staff->operator_name}-->
                                     </option>
                                     <!--{/foreach}-->
@@ -64,10 +64,10 @@
                                 <tr>
                                     <th><label>顧客担当者</label></th>
                                     <td>
-                                    <select name="customer_operator_id" class="form-control">
-                                    <!--{assign var="customer_operator_id" value=$split->customer_operator_id|input:"customer_operator_id"}-->
+                                    <select name="dest_operator_id" class="form-control">
+                                    <!--{assign var="dest_operator_id" value=$split->dest_operator_id|input:"dest_operator_id"}-->
                                     <!--{foreach from=$attr.customers item="customer"}-->
-                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $customer_operator_id}--> selected<!--{/if}-->>
+                                    <option value="<!--{$customer->operator_id}-->"<!--{if $customer->operator_id == $dest_operator_id}--> selected<!--{/if}-->>
                                     <!--{$customer->company()->company_name}--> <!--{$customer->operator_name}-->
                                     </option>
                                     <!--{/foreach}-->

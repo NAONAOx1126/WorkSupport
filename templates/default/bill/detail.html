@@ -34,13 +34,12 @@
                     <!--{/if}-->
                     <div class="btn-toolbar">
                         <div class="btn-group">
-                        <a href="edit.html?bill_id=<!--{$bill->bill_id}-->" class="btn btn-default">このデータを編集する</a>
-                        <!--{if $bill->related_bill_id > 0}-->
-                        <a href="edit.html?bill_id=<!--{$bill->related_bill_id}-->" class="btn btn-default">元のデータを編集する</a>
-                        <!--{/if}-->
+                        <a href="index.html?exec_search=1" class="btn btn-default">一覧に戻る</a>
                         </div>
                         <div class="btn-group">
-                            <a href="pdf/quotation.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">見積書出力</a>
+                        <a href="edit.html?bill_id=<!--{$bill->bill_id}-->" class="btn btn-default">編集する</a>
+                        </div>
+                        <div class="btn-group">
                             <a href="pdf/deliver.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">納品書出力</a>
                             <a href="pdf/bill.html?bill_ids=<!--{$bill->bill_id}-->" class="btn btn-default" target="_blank">請求書出力</a>
                         </div>
@@ -49,15 +48,15 @@
                         <tbody>
                             <tr>
                                 <th><label>取引名称</label></th>
-                                <td><!--{$bill->bill_name}--></td>
+                                <td><!--{$bill->trade_name|escape}--></td>
                             </tr>
                             <tr>
                                 <th><label>作業担当者</label></th>
-                                <td><!--{$bill->worker()->company()->company_name}--> <!--{$bill->worker()->operator_name}--></td>
+                                <td><!--{$bill->source()->company()->company_name}--> <!--{$bill->source()->operator_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>顧客担当者</label></th>
-                                <td><!--{$bill->customer()->company()->company_name}--> <!--{$bill->customer()->operator_name}--></td>
+                                <td><!--{$bill->dest()->company()->company_name}--> <!--{$bill->dest()->operator_name}--></td>
                             </tr>
                             <tr>
                                 <th><label>取引種別</label></th>
@@ -74,7 +73,7 @@
                                 <!--{assign var="details" value=$bill->details()}-->
                                 <!--{foreach from=$details item="detail"}-->
                                 <tr>
-                                    <td><!--{$detail->bill_detail_name}--></td>
+                                    <td><!--{$detail->product_name|escape}--></td>
                                     <td><!--{$detail->price|number_format}-->円</td>
                                     <td><!--{$detail->quantity|number_format}--></td>
                                     <td>
@@ -93,19 +92,21 @@
                                     <td colspan="4">消費税</td>
                                     <td><!--{$bill->tax|number_format}-->円</td>
                                 </tr>
-                                <!--{if $bill->adjust > 0}-->
+                                <!--{if $bill->discount > 0}-->
                                 <tr>
-                                    <td colspan="4">合計金額</td>
-                                    <td><!--{$bill->total|number_format}-->円</td>
+                                    <td colspan="4"><!--{$bill->discount_title|default:"割引金額"}--></td>
+                                    <td><!--{$bill->discount|number_format}-->円</td>
                                 </tr>
+                                <!--{/if}-->
+                                <!--{if $bill->adjust > 0}-->
                                 <tr>
                                     <td colspan="4"><!--{$bill->adjust_title|default:"調整金額"}--></td>
                                     <td><!--{$bill->adjust|number_format}-->円</td>
                                 </tr>
                                 <!--{/if}-->
                                 <tr>
-                                    <td colspan="4">入金予定金額</td>
-                                    <td><!--{$bill->payment_total|number_format}-->円</td>
+                                    <td colspan="4">合計金額</td>
+                                    <td><!--{$bill->total|number_format}-->円</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4">入金済み金額</td>
@@ -140,6 +141,10 @@
                             <tr>
                                 <th><label>入金確認日</label></th>
                                 <td><!--{$bill->complete_date|date_format:"%Y年%m月%d日"}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>次回請求予定日</label></th>
+                                <td><!--{$bill->next_billing_date|date_format:"%Y年%m月%d日"}--></td>
                             </tr>
                             <tr>
                                 <th><label>特記事項</label></th>

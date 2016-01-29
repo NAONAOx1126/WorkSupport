@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="loadmodule" content="Admin.Login" error="login.html" />
+<meta name="loadmodule" content="Admin.Operator.List" result="staffs" wkey="ne:role_id" wvalue="3" />
+<meta name="loadmodule" content="Admin.Operator.List" result="customers" />
+<meta name="loadmodule" content="Trade.Type.List" mode="select" select="type_id|type_name" />
+<meta name="loadmodule" content="Trade.Status.List" mode="select" select="status_id|status_name" />
+<meta name="loadmodule" content="Trade.Quotation.Detail" />
+<!--{include file="common/header.html" subtitle=$configure.f_quotation}-->
+</head>
+<body class="bg_d">
+    <div class="main-wrapper">
+        <!--{include file="common/menu.html"}-->
+        <!--{assign var="quotation" value=$attr.quotation}-->
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="w-box-header">
+                        <h3><!--{$configure.f_quotation}--> - <!--{$configure.s_edit}--></h3>
+                    </div>
+                    <!--{if is_array($ERRORS) && count($ERRORS) > 0}-->
+                    <div class="alert alert-danger">
+                        <ul>
+                            <!--{foreach from=$ERRORS item="error"}-->
+                            <li>
+                                <!--{$error}-->
+                            </li>
+                            <!--{/foreach}-->
+                        </ul>
+                    </div>
+                    <!--{/if}-->
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                        <a href="index.html?exec_search=1" class="btn btn-default">一覧に戻る</a>
+                        </div>
+                        <div class="btn-group">
+                        <a href="edit.html?quotation_id=<!--{$quotation->quotation_id}-->" class="btn btn-default">編集する</a>
+                        </div>
+                        <div class="btn-group">
+                            <a href="pdf/quotation.html?quotation_ids=<!--{$quotation->quotation_id}-->" class="btn btn-default" target="_blank">見積書出力</a>
+                        </div>
+                    </div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th><label>取引名称</label></th>
+                                <td><!--{$quotation->trade_name|escape}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>作業担当者</label></th>
+                                <td><!--{$quotation->source()->company()->company_name}--> <!--{$quotation->source()->operator_name}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>顧客担当者</label></th>
+                                <td><!--{$quotation->dest()->company()->company_name}--> <!--{$quotation->dest()->operator_name}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>継続案件</label></th>
+                                <td><!--{if $quotation->continue_flg == "1"}--><!--{$quotation->bill_interval}-->ヶ月毎に請求<!--{else}-->継続しない<!--{/if}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>取引種別</label></th>
+                                <td><!--{$quotation->type()->type_name}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>取引ステータス</label></th>
+                                <td><!--{$quotation->status()->status_name}--></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                <table id="detail" class="table table-striped table-bordered">
+                                <tr><th>名称</th><th>単価</th><th>数量</th><th>消費税区分</th></tr>
+                                <!--{assign var="details" value=$quotation->details()}-->
+                                <!--{foreach from=$details item="detail"}-->
+                                <tr>
+                                    <td><!--{$detail->product_name|escape}--></td>
+                                    <td><!--{$detail->price}-->円</td>
+                                    <td><!--{$detail->quantity}--></td>
+                                    <td>
+                                        <!--{if $detail->tax_type == "1"}-->外税：<!--{$detail->tax_rate}-->%<!--{/if}-->
+                                        <!--{if $detail->tax_type == "2"}-->内税：<!--{$detail->tax_rate}-->%<!--{/if}-->
+                                        <!--{if $detail->tax_type == "3"}-->非課税<!--{/if}-->
+                                    </td>
+                                </tr>
+                                <!--{/foreach}-->
+                                <tr>
+                                    <td colspan="4">小計</td>
+                                    <td><!--{$quotation->subtotal|number_format}-->円</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">消費税</td>
+                                    <td><!--{$quotation->tax|number_format}-->円</td>
+                                </tr>
+                                <!--{if $quotation->discount > 0}-->
+                                <tr>
+                                    <td colspan="4"><!--{$quotation->discount_title|default:"割引金額"}--></td>
+                                    <td><!--{$quotation->discount|number_format}-->円</td>
+                                </tr>
+                                <!--{/if}-->
+                                <!--{if $quotation->adjust > 0}-->
+                                <tr>
+                                    <td colspan="4"><!--{$quotation->adjust_title|default:"調整金額"}--></td>
+                                    <td><!--{$quotation->adjust|number_format}-->円</td>
+                                </tr>
+                                <!--{/if}-->
+                                <tr>
+                                    <td colspan="4">合計金額</td>
+                                    <td><!--{$quotation->total|number_format}-->円</td>
+                                </tr>
+                                </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label>見積作成日</label></th>
+                                <td><!--{$quotation->quotation_date|date_format:"%Y年%m月%d日"}--></tr>
+                            <tr>
+                                <th><label>注文日</label></th>
+                                <td><!--{$quotation->ordered_date|date_format:"%Y年%m月%d日"}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>特記事項</label></th>
+                                <td><!--{$quotation->description|escape|nl2br}--></td>
+                            </tr>
+                            <tr>
+                                <th><label>コメント（非表示）</label></th>
+                                <td><!--{$quotation->comment|escape|nl2br}--></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--/span-->
+            </div>
+            <!--/row-->
+        </div>
+        <hr>
+        <!--{include file="common/footer.html"}-->
+    </div>
+    <!--{include file="common/script.html"}-->
+</body>
+</html>
+
